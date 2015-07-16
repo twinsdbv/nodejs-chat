@@ -1,337 +1,337 @@
 // This file is executed in the browser, when people visit /chat/<random id>
 
-$(function(){
-
-	// getting the id of the room from the url
-	var id = Number(window.location.pathname.match(/\/chat\/(\d+)$/)[1]);
+$(function () {
 
-	// connect to the socket
-	var socket = io();
-	
-	// variables which hold the data for each person
-	var name = "",
-		email = "",
-		img = "",
-		friend = "";
-
-	// cache some jQuery objects
-	var section = $(".section"),
-		footer = $("footer"),
-		onConnect = $(".connected"),
-		inviteSomebody = $(".invite-textfield"),
-		personInside = $(".personinside"),
-		chatScreen = $(".chatscreen"),
-		left = $(".left"),
-		noMessages = $(".nomessages"),
-		tooManyPeople = $(".toomanypeople");
-
-	// some more jquery objects
-	var chatNickname = $(".nickname-chat"),
-		leftNickname = $(".nickname-left"),
-		loginForm = $(".loginForm"),
-		yourName = $("#yourName"),
-		yourEmail = $("#yourEmail"),
-		hisName = $("#hisName"),
-		hisEmail = $("#hisEmail"),
-		chatForm = $("#chatform"),
-		textarea = $("#message"),
-		messageTimeSent = $(".timesent"),
-		chats = $(".chats");
+  // getting the id of the room from the url
+  var id = Number(window.location.pathname.match(/\/chat\/(\d+)$/)[1]);
 
-	// these variables hold images
-	var ownerImage = $("#ownerImage"),
-		leftImage = $("#leftImage"),
-		noMessagesImage = $("#noMessagesImage");
+  // connect to the socket
+  var socket = io();
 
+  // variables which hold the data for each person
+  var name = "",
+    email = "",
+    img = "",
+    friend = "";
 
-	// on connection to server get the id of person's room
-	socket.on('connect', function(){
+  // cache some jQuery objects
+  var section = $(".section"),
+    footer = $("footer"),
+    onConnect = $(".connected"),
+    inviteSomebody = $(".invite-textfield"),
+    personInside = $(".personinside"),
+    chatScreen = $(".chatscreen"),
+    left = $(".left"),
+    noMessages = $(".nomessages"),
+    tooManyPeople = $(".toomanypeople");
 
-		socket.emit('load', id);
-	});
+  // some more jquery objects
+  var chatNickname = $(".nickname-chat"),
+    leftNickname = $(".nickname-left"),
+    loginForm = $(".loginForm"),
+    yourName = $("#yourName"),
+    yourEmail = $("#yourEmail"),
+    hisName = $("#hisName"),
+    hisEmail = $("#hisEmail"),
+    chatForm = $("#chatform"),
+    textarea = $("#message"),
+    messageTimeSent = $(".timesent"),
+    chats = $(".chats");
 
-	// save the gravatar url
-	socket.on('img', function(data){
-		img = data;
-	});
+  // these variables hold images
+  var ownerImage = $("#ownerImage"),
+    leftImage = $("#leftImage"),
+    noMessagesImage = $("#noMessagesImage");
 
-	// receive the names and avatars of all people in the chat room
-	socket.on('peopleinchat', function(data){
 
-		if(data.number === 0){
+  // on connection to server get the id of person's room
+  socket.on('connect', function () {
 
-			showMessage("connected");
+    socket.emit('load', id);
+  });
 
-			loginForm.on('submit', function(e){
+  // save the gravatar url
+  socket.on('img', function (data) {
+    img = data;
+  });
 
-				e.preventDefault();
+  // receive the names and avatars of all people in the chat room
+  socket.on('peopleinchat', function (data) {
 
-				name = $.trim(yourName.val());
-				
-				if(name.length < 1){
-					alert("Please enter a nick name longer than 1 character!");
-					return;
-				}
+    if (data.number === 0) {
 
-				email = yourEmail.val();
+      showMessage("connected");
 
-				if(!isValid(email)) {
-					alert("Please enter a valid email!");
-				}
-				else {
+      loginForm.on('submit', function (e) {
 
-					showMessage("inviteSomebody");
+        e.preventDefault();
 
-					// call the server-side function 'login' and send user's parameters
-					socket.emit('login', {user: name, avatar: email, id: id});
-				}
-			
-			});
-		}
+        name = $.trim(yourName.val());
 
-		else if(data.number === 1) {
+        if (name.length < 1) {
+          alert("Please enter a nick name longer than 1 character!");
+          return;
+        }
 
-			showMessage("personinchat",data);
+        email = yourEmail.val();
 
-			loginForm.on('submit', function(e){
+        if (!isValid(email)) {
+          alert("Please enter a valid email!");
+        }
+        else {
 
-				e.preventDefault();
+          showMessage("inviteSomebody");
 
-				name = $.trim(hisName.val());
+          // call the server-side function 'login' and send user's parameters
+          socket.emit('login', {user: name, avatar: email, id: id});
+        }
 
-				if(name.length < 1){
-					alert("Please enter a nick name longer than 1 character!");
-					return;
-				}
+      });
+    }
 
-				if(name == data.user){
-					alert("There already is a \"" + name + "\" in this room!");
-					return;
-				}
-				email = hisEmail.val();
+    else if (data.number === 1) {
 
-				if(!isValid(email)){
-					alert("Wrong e-mail format!");
-				}
-				else {
-					socket.emit('login', {user: name, avatar: email, id: id});
-				}
+      showMessage("personinchat", data);
 
-			});
-		}
+      loginForm.on('submit', function (e) {
 
-		else {
-			showMessage("tooManyPeople");
-		}
+        e.preventDefault();
 
-	});
+        name = $.trim(hisName.val());
 
-	// Other useful 
+        if (name.length < 1) {
+          alert("Please enter a nick name longer than 1 character!");
+          return;
+        }
 
-	socket.on('startChat', function(data){
-		console.log(data);
-		if(data.boolean && data.id == id) {
+        if (name == data.user) {
+          alert("There already is a \"" + name + "\" in this room!");
+          return;
+        }
+        email = hisEmail.val();
 
-			chats.empty();
+        if (!isValid(email)) {
+          alert("Wrong e-mail format!");
+        }
+        else {
+          socket.emit('login', {user: name, avatar: email, id: id});
+        }
 
-			if(name === data.users[0]) {
+      });
+    }
 
-				showMessage("youStartedChatWithNoMessages",data);
-			}
-			else {
+    else {
+      showMessage("tooManyPeople");
+    }
 
-				showMessage("heStartedChatWithNoMessages",data);
-			}
+  });
 
-			chatNickname.text(friend);
-		}
-	});
+  // Other useful
 
-	socket.on('leave',function(data){
+  socket.on('startChat', function (data) {
+    console.log(data);
+    if (data.boolean && data.id == id) {
 
-		if(data.boolean && id==data.room){
+      chats.empty();
 
-			showMessage("somebodyLeft", data);
-			chats.empty();
-		}
+      if (name === data.users[0]) {
 
-	});
+        showMessage("youStartedChatWithNoMessages", data);
+      }
+      else {
 
-	socket.on('tooMany', function(data){
+        showMessage("heStartedChatWithNoMessages", data);
+      }
 
-		if(data.boolean && name.length === 0) {
+      chatNickname.text(friend);
+    }
+  });
 
-			showMessage('tooManyPeople');
-		}
-	});
+  socket.on('leave', function (data) {
 
-	socket.on('receive', function(data){
+    if (data.boolean && id == data.room) {
 
-		showMessage('chatStarted');
+      showMessage("somebodyLeft", data);
+      chats.empty();
+    }
 
-		if(data.msg.trim().length) {
-			createChatMessage(data.msg, data.user, data.img, moment());
-			scrollToBottom();
-		}
-	});
+  });
 
-	textarea.keypress(function(e){
+  socket.on('tooMany', function (data) {
 
-		// Submit the form on enter
+    if (data.boolean && name.length === 0) {
 
-		if(e.which == 13) {
-			e.preventDefault();
-			chatForm.trigger('submit');
-		}
+      showMessage('tooManyPeople');
+    }
+  });
 
-	});
+  socket.on('receive', function (data) {
 
-	chatForm.on('submit', function(e){
+    showMessage('chatStarted');
 
-		e.preventDefault();
+    if (data.msg.trim().length) {
+      createChatMessage(data.msg, data.user, data.img, moment());
+      scrollToBottom();
+    }
+  });
 
-		// Create a new chat message and display it directly
+  textarea.keypress(function (e) {
 
-		showMessage("chatStarted");
+    // Submit the form on enter
 
-		if(textarea.val().trim().length) {
-			createChatMessage(textarea.val(), name, img, moment());
-			scrollToBottom();
+    if (e.which == 13) {
+      e.preventDefault();
+      chatForm.trigger('submit');
+    }
 
-			// Send the message to the other person in the chat
-			socket.emit('msg', {msg: textarea.val(), user: name, img: img});
+  });
 
-		}
-		// Empty the textarea
-		textarea.val("");
-	});
+  chatForm.on('submit', function (e) {
 
-	// Update the relative time stamps on the chat messages every minute
+    e.preventDefault();
 
-	setInterval(function(){
+    // Create a new chat message and display it directly
 
-		messageTimeSent.each(function(){
-			var each = moment($(this).data('time'));
-			$(this).text(each.fromNow());
-		});
+    showMessage("chatStarted");
 
-	},60000);
+    if (textarea.val().trim().length) {
+      createChatMessage(textarea.val(), name, img, moment());
+      scrollToBottom();
 
-	// Function that creates a new chat message
+      // Send the message to the other person in the chat
+      socket.emit('msg', {msg: textarea.val(), user: name, img: img});
 
-	function createChatMessage(msg,user,imgg,now){
+    }
+    // Empty the textarea
+    textarea.val("");
+  });
 
-		var who = '';
+  // Update the relative time stamps on the chat messages every minute
 
-		if(user===name) {
-			who = 'me';
-		}
-		else {
-			who = 'you';
-		}
+  setInterval(function () {
 
-		var li = $(
-			'<li class=' + who + '>'+
-				'<div class="image">' +
-					'<img src=' + imgg + ' />' +
-					'<b></b>' +
-					'<i class="timesent" data-time=' + now + '></i> ' +
-				'</div>' +
-				'<p></p>' +
-			'</li>');
+    messageTimeSent.each(function () {
+      var each = moment($(this).data('time'));
+      $(this).text(each.fromNow());
+    });
 
-		// use the 'text' method to escape malicious user input
-		li.find('p').text(msg);
-		li.find('b').text(user);
+  }, 60000);
 
-		chats.append(li);
+  // Function that creates a new chat message
 
-		messageTimeSent = $(".timesent");
-		messageTimeSent.last().text(now.fromNow());
-	}
+  function createChatMessage(msg, user, imgg, now) {
 
-	function scrollToBottom(){
-		$("html, body").animate({ scrollTop: $(document).height()-$(window).height() },1000);
-	}
+    var who = '';
 
-	function isValid(thatemail) {
+    if (user === name) {
+      who = 'me';
+    }
+    else {
+      who = 'you';
+    }
 
-		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		return re.test(thatemail);
-	}
+    var li = $(
+      '<li class=' + who + '>' +
+      '<div class="image">' +
+      '<img src=' + imgg + ' />' +
+      '<b></b>' +
+      '<i class="timesent" data-time=' + now + '></i> ' +
+      '</div>' +
+      '<p></p>' +
+      '</li>');
 
-	function showMessage(status,data){
+    // use the 'text' method to escape malicious user input
+    li.find('p').text(msg);
+    li.find('b').text(user);
 
-		if(status === "connected"){
+    chats.append(li);
 
-			section.children().css('display', 'none');
-			onConnect.fadeIn(500);
-		}
+    messageTimeSent = $(".timesent");
+    messageTimeSent.last().text(now.fromNow());
+  }
 
-		else if(status === "inviteSomebody"){
+  function scrollToBottom() {
+    $("html, body").animate({scrollTop: $(document).height() - $(window).height()}, 1000);
+  }
 
-			// Set the invite link content
-			$("#link").text(window.location.href);
+  function isValid(thatemail) {
 
-			onConnect.fadeOut(500, function(){
-				inviteSomebody.fadeIn(500);
-			});
-		}
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(thatemail);
+  }
 
-		else if(status === "personinchat"){
+  function showMessage(status, data) {
 
-			onConnect.css("display", "none");
-			personInside.fadeIn(500);
+    if (status === "connected") {
 
-			chatNickname.text(data.user);
-			ownerImage.attr("src",data.avatar);
-		}
+      section.children().css('display', 'none');
+      onConnect.fadeIn(500);
+    }
 
-		else if(status === "youStartedChatWithNoMessages") {
+    else if (status === "inviteSomebody") {
 
-			left.fadeOut(500, function() {
-				inviteSomebody.fadeOut(500,function(){
-					noMessages.fadeIn(500);
-					footer.fadeIn(500);
-				});
-			});
+      // Set the invite link content
+      $("#link").text(window.location.href);
 
-			friend = data.users[1];
-			noMessagesImage.attr("src",data.avatars[1]);
-		}
+      onConnect.fadeOut(500, function () {
+        inviteSomebody.fadeIn(500);
+      });
+    }
 
-		else if(status === "heStartedChatWithNoMessages") {
+    else if (status === "personinchat") {
 
-			personInside.fadeOut(500,function(){
-				noMessages.fadeIn(500);
-				footer.fadeIn(500);
-			});
+      onConnect.css("display", "none");
+      personInside.fadeIn(500);
 
-			friend = data.users[0];
-			noMessagesImage.attr("src",data.avatars[0]);
-		}
+      chatNickname.text(data.user);
+      ownerImage.attr("src", data.avatar);
+    }
 
-		else if(status === "chatStarted"){
+    else if (status === "youStartedChatWithNoMessages") {
 
-			section.children().css('display','none');
-			chatScreen.css('display','block');
-		}
+      left.fadeOut(500, function () {
+        inviteSomebody.fadeOut(500, function () {
+          noMessages.fadeIn(500);
+          footer.fadeIn(500);
+        });
+      });
 
-		else if(status === "somebodyLeft"){
+      friend = data.users[1];
+      noMessagesImage.attr("src", data.avatars[1]);
+    }
 
-			leftImage.attr("src",data.avatar);
-			leftNickname.text(data.user);
+    else if (status === "heStartedChatWithNoMessages") {
 
-			section.children().css('display','none');
-			footer.css('display', 'none');
-			left.fadeIn(500);
-		}
+      personInside.fadeOut(500, function () {
+        noMessages.fadeIn(500);
+        footer.fadeIn(500);
+      });
 
-		else if(status === "tooManyPeople") {
+      friend = data.users[0];
+      noMessagesImage.attr("src", data.avatars[0]);
+    }
 
-			section.children().css('display', 'none');
-			tooManyPeople.fadeIn(500);
-		}
-	}
+    else if (status === "chatStarted") {
+
+      section.children().css('display', 'none');
+      chatScreen.css('display', 'block');
+    }
+
+    else if (status === "somebodyLeft") {
+
+      leftImage.attr("src", data.avatar);
+      leftNickname.text(data.user);
+
+      section.children().css('display', 'none');
+      footer.css('display', 'none');
+      left.fadeIn(500);
+    }
+
+    else if (status === "tooManyPeople") {
+
+      section.children().css('display', 'none');
+      tooManyPeople.fadeIn(500);
+    }
+  }
 
 });

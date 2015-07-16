@@ -1,6 +1,6 @@
 var express = require('express')
-  , router = express.Router()
+  , router = express.Router();
 
 // Define routes handling profile requests
 
-module.exports = router
+module.exports = router;
