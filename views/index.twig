@@ -4,6 +4,12 @@
     <section>
         <div class="homesection">
 
+            <h3>One room:</h3>
+            <p>
+                <a href="/chat/{{ oneRoom.id }}"><b>{{ oneRoom.name }}:</b></a> {{ oneRoom.description }}
+            </p>
+            <hr/>
+
             <ul>
                 {% for room in rooms %}
                     <li>

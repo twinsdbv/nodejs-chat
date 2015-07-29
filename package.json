@@ -22,7 +22,8 @@
     "twig": "~0.8.*",
     "socket.io": "~1.3.6",
     "gravatar": "*",
-    "mongoose": "~4.0.7"
+    "mongoose": "~4.0.7",
+    "async": "~1.4.*"
   },
   "devDependencies": {
     "mocha": "^2.2.4",
