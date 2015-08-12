@@ -1,12 +1,18 @@
 var express = require('express')
   , router = express.Router()
+  , models = require('../models');
 
-router.get('/create', function(req, res) {
-    // Generate unique id for the room
-    var id = Math.round((Math.random() * 1000000));
+router.post('/create', function (req, res) {
+    var name = req.body.name;
+    var description = req.body.description;
 
-    // Redirect to the random room
-    res.redirect('/chat/'+id);
-})
+    var RoomObj = new models.Room.model({
+        'name': name,
+        'description': description
+    });
+    RoomObj.save();
 
-module.exports = router
+    res.redirect('/chat/' + RoomObj.id);
+});
+
+module.exports = router;
