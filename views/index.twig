@@ -4,12 +4,28 @@
     <section>
         <div class="homesection">
 
-            <a title="Create" href="/room/create" id="create">
-                <div id="createbutton">
-                    <div id="little">Create a Private</div>
-                    <div id="big">CHAT ROOM!</div>
-                </div>
-            </a>
+            <h3>One room:</h3>
+            <p>
+                <a href="/chat/{{ oneRoom.id }}"><b>{{ oneRoom.name }}:</b></a> {{ oneRoom.description }}
+            </p>
+            <hr/>
+
+            <ul>
+                {% for room in rooms %}
+                    <li>
+                        <a href="/chat/{{ room.id }}"><b>{{ room.name }}:</b></a> {{ room.description }}
+                    </li>
+                {% else %}
+                    There are no rooms!
+                {% endfor %}
+            </ul>
+            <hr/>
+
+            <form action="/room/create" method="post">
+                <input type="text" name="name" placeholder="Room name"><br/>
+                <input type="text" name="description" placeholder="Description"><br/>
+                <button type="submit">Create</button>
+            </form>
 
             <div class="tutorial"></div>
         </div>
