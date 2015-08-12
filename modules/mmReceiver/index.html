@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/default.min.css">
+    <style>
+        .chat-img,
+        .chat-link,
+        .chat-video {
+            max-width: 90%;
+            margin: 0 auto;
+        }
+        .container {
+            text-align: center;
+            margin: 0 auto;
+        }
+        textarea,
+        #result {
+            width: 500px;
+            min-height: 400px;
+            padding: 5px;
+        }
+        #text {
+            margin-top: 20px;
+        }
+        #result {
+            text-align: left;
+            border-radius: 3px;
+            border: 1px solid #ADA9A5;
+            margin: 50px auto 0 auto;
+        }
+        .chat-link {
+            display: block;
+        }
+        .chat-video {
+            text-align: center;
+        }
+        .chat-img {
+            display: block;
+            height: auto;
+            margin: 20px auto;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form id="text">
+            <label><textarea></textarea></label>
+            <div>
+                <input class="btn btn-primary" type="submit" value="Submit">
+            </div>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script>
+    <script src="smiley-pack/pack.js"></script>
+    <script src="app.js"></script>
+    <script>
+        $(document).ready(function () {
+            SmileyPack.init();
+
+            $('#text').submit(function (e) {
+                e.preventDefault();
+
+                var message = $(this).find('textarea').val();
+
+                MMreceiver.init(message, function(result){
+
+                    $('#result').html(result);
+                    Helper.initHighLight();
+                });
+
+            });
+        });
+    </script>
+</body>
+</html>
