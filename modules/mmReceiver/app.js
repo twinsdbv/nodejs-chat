@@ -28,8 +28,7 @@ var MMreceiver = (function () {
           vimeoLink: /vimeo.*\/(\d+)/i,
           smiles: /(\:\w+\:|\<[\/\\]?3|[\(\)\\\D|\*\$][\-\^]?[\:\;\=]|[\:\;\=B8][\-\^]?[3DOPp\@\$\*\\\)\(\/\|])(?=\s|[\!\.\?]|$)/g
         },
-        smileyData = false,
-        callBackInit = false,
+        InitCallBack = false,
 
 
 
@@ -42,7 +41,7 @@ var MMreceiver = (function () {
             }
 
             if(callback && typeof(callback) === "function") {
-                callBackInit = function() {
+                InitCallBack = function() {
                     callback(Msg.text);
                 }
             }
@@ -70,17 +69,18 @@ var MMreceiver = (function () {
 
             forLinks: function () {
 
-                Search.images(function() {
-                    Search.video(function() {
+                Search.images( function() {
+                    Search.video( function() {
                         Search.url();
                     })
                 });
             },
 
             forSmiles: function () {
-                smileyData = SmileyPack.getSmileyData();
-
-                Search.smiles();
+                Search.smiles( function (result) {
+                    Message.set(result);
+                    InitCallBack();
+                });
             }
 
         },
@@ -113,9 +113,7 @@ var MMreceiver = (function () {
                 var result = Message.get().replace(regExp.video, function (link) {
 
                     return ( link.indexOf('youtu')+1 )? Prepare.youtubeIframe(link) : Prepare.vimeoIframe(link);
-
                 });
-
 
 
                 Message.set(result);
@@ -134,16 +132,13 @@ var MMreceiver = (function () {
                 Check.forSmiles();
             },
 
-            smiles: function () {
+            smiles: function (callback) {
                 var result = Message.get().replace(regExp.smiles, function(emoticons) {
-                    console.log(emoticons);
 
                     return Prepare.forSmilePack(emoticons);
                 });
 
-                Message.set(result);
-
-                callBackInit();
+                callback(result);
             }
 
         },
@@ -205,7 +200,7 @@ var MMreceiver = (function () {
             },
 
             forSmilePack: function (emoticon) {
-                return (smileyData[emoticon]) ? smileyData[emoticon] : emoticon;
+                return SmileyPack.getImage(emoticon);
             },
 
             encodeURI: function (msg) {
@@ -241,8 +236,8 @@ var MMreceiver = (function () {
             },
 
             set: function (data) {
-                //console.log(data);
                 Msg.text = data;
+
             },
 
             setForPos: function (startPos, endPos, data) {

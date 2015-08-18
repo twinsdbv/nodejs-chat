@@ -21,14 +21,33 @@
             width: 500px;
             min-height: 400px;
             padding: 5px;
+            border-radius: 0;
+            border: 1px solid #ADA9A5;
+        }
+        textarea {
+            resize: none;
         }
         #text {
             margin-top: 20px;
         }
+        #text label {
+            position: relative;
+        }
+        #text .tools {
+            position: absolute;
+            display: block;
+            bottom: -29px;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            text-align: left;
+            line-height: 39px;
+            padding: 0 1%;
+            border: 1px solid #ADA9A5;
+            border-top: none;
+        }
         #result {
             text-align: left;
-            border-radius: 3px;
-            border: 1px solid #ADA9A5;
             margin: 50px auto 0 auto;
         }
         .chat-link {
@@ -42,14 +61,53 @@
             height: auto;
             margin: 20px auto;
         }
+        .submit {
+            margin-top: 40px;
+        }
+        #smile {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            padding: 0;
+            cursor: pointer;
+            background: url("smiley-pack/skype-smiley-pack/smile.gif");
+        }
+        #emoticons {
+            display: none;
+            position: absolute;
+            bottom: 100%;
+            left: 1px;
+            width: 200px;
+            height: auto;
+            padding: 0 5px;
+            margin-bottom: -3px;
+            border: 1px solid #ADA9A5;
+            -webkit-box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.27);
+            -moz-box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.27);
+            box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.27);
+            background: #fff;
+        }
+        #emoticons.show {
+            display: block;
+        }
+        #emoticons img {
+            cursor: pointer;
+            margin-left: 3px;
+        }
 
     </style>
 </head>
 <body>
     <div class="container">
         <form id="text">
-            <label><textarea></textarea></label>
-            <div>
+            <label>
+                <textarea></textarea>
+                <span class="tools">
+                    <span id="smile"></span>
+                    <span id="emoticons"></span>
+                </span>
+            </label>
+            <div class="submit">
                 <input class="btn btn-primary" type="submit" value="Submit">
             </div>
         </form>
@@ -61,7 +119,19 @@
     <script src="app.js"></script>
     <script>
         $(document).ready(function () {
-            SmileyPack.init();
+
+            SmileyPack.init(function() {
+
+                var $emoticons = $('#emoticons');
+                $emoticons.html( SmileyPack.getAllImages() );
+
+                $emoticons.find('img').on('click', function () {
+                    var emoticoName = $(this).data('name');
+                    $('textarea').insertAtCaret(emoticoName);
+
+                    $('#emoticons').removeClass('show');
+                })
+            });
 
             $('#text').submit(function (e) {
                 e.preventDefault();
@@ -69,12 +139,45 @@
                 var message = $(this).find('textarea').val();
 
                 MMreceiver.init(message, function(result){
-
                     $('#result').html(result);
                     Helper.initHighLight();
+
                 });
 
             });
+
+            $('#smile').on('click', function () {
+                $('#emoticons').toggleClass('show');
+            });
+        });
+
+
+        jQuery.fn.extend({
+            insertAtCaret: function(myValue){
+                return this.each(function(i) {
+                    if (document.selection) {
+                        // for Internet Explorer
+                        this.focus();
+                        var sel = document.selection.createRange();
+                        sel.text = myValue;
+                        this.focus();
+                    }
+                    else if (this.selectionStart || this.selectionStart == '0') {
+                        // for Firefox and Webkit's
+                        var startPos = this.selectionStart;
+                        var endPos = this.selectionEnd;
+                        var scrollTop = this.scrollTop;
+                        this.value = this.value.substring(0, startPos)+myValue+this.value.substring(endPos,this.value.length);
+                        this.focus();
+                        this.selectionStart = startPos + myValue.length;
+                        this.selectionEnd = startPos + myValue.length;
+                        this.scrollTop = scrollTop;
+                    } else {
+                        this.value += myValue;
+                        this.focus();
+                    }
+                })
+            }
         });
     </script>
 </body>
