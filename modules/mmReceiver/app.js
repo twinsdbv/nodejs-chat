@@ -134,7 +134,6 @@ var MMreceiver = (function () {
 
             smiles: function (callback) {
                 var result = Message.get().replace(regExp.smiles, function(emoticons) {
-                    console.log(emoticons);
 
                     return Prepare.forSmilePack(emoticons);
                 });
