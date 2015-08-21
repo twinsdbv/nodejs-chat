@@ -123,7 +123,7 @@ var MMreceiver = (function () {
 
             url: function () {
                 var result = Message.get().replace(regExp.url, function( url ) {
-                    url = Prepare.encodeURI( Prepare.replaceSpaces(url) );
+                    url = Prepare.encodeURI( url.trim() );
 
                     return Prepare.url( url );
                 });
@@ -214,10 +214,6 @@ var MMreceiver = (function () {
                     .replace(/>/g, "&gt;")
                     .replace(/"/g, "&quot;")
                     .replace(/'/g, "&#039;");
-            },
-
-            replaceSpaces: function (msg) {
-                return msg.replace(/\s+/g, '')
             },
 
             unicode: function (string) {
