@@ -479,6 +479,10 @@ body {
     margin-top: 10px;
 }
 
+.chats li:first-child {
+    padding: 5px 0;
+}
+
 .me {
     clear: both;
     float: left;
@@ -560,8 +564,24 @@ footer {
 
 #chatform {
     width: 700px;
+    padding: 5px 0;
     margin: 0 auto;
     background-color: white;
+}
+
+#chatform label {
+    display: block;
+    text-align: center;
+}
+
+#chatform label textarea {
+    width: 99%;
+    padding: 3px;
+}
+
+#chatform [type="submit"] {
+    display: block;
+    margin: 0 auto;
 }
 
 #message {
@@ -629,8 +649,12 @@ footer {
 }
 
 .chatscreen {
-    display: none;
+    /*display: none;*/
     width: 700px;
     margin: 0 auto 200px;
     overflow: hidden;
+}
+.chatsWindow {
+    height: 300px;
+    background-color: #FFF;
 }
