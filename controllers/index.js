@@ -5,7 +5,7 @@ var room = require('./room');
 var login = require('./login');
 var user = require('./user');
 
-module.exports = function (app) {
+module.exports = function (app, io) {
     app.get('/', function(req, res) {
         var sess = req.session;
 
@@ -27,6 +27,9 @@ module.exports = function (app) {
                 , function (err, result) {
                     res.render('index', {rooms: result.getRooms, oneRoom: result.getOneRoom});
                 });
+
+            res.cookie('email' , sess.email);
+            require('../helpers/chat-sockets')(app, io);
         }
         else{
             res.redirect('/login');
