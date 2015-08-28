@@ -1,5 +1,6 @@
 var Twig = require("twig");
 var express = require('express');
+var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var mongoose = require('mongoose');
 var app = express();
@@ -32,10 +33,9 @@ mongoose.connect('mongodb://127.0.0.1:27017/chat_brainspark', function (error) {
             resave: true,
             saveUninitialized: true
         }));
+        app.use(cookieParser());
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({extended: true}));
-        require('./controllers')(app);
-
-        require('./helpers/chat-sockets')(app, io);
+        require('./controllers')(app, io);
     }));
 });
