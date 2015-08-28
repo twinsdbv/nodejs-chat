@@ -1,9 +1,10 @@
-var Twig = require("twig")
-  , express = require('express')
-  , mongoose = require('mongoose')
-  , app = express()
-  , bodyParser = require('body-parser')
-  , port = process.env.PORT || 3000;
+var Twig = require("twig");
+var express = require('express');
+var session = require('express-session');
+var mongoose = require('mongoose');
+var app = express();
+var bodyParser = require('body-parser');
+var port = process.env.PORT || 3000;
 
 app.set('view engine', 'twig');
 app.set("twig options", {
@@ -26,9 +27,14 @@ mongoose.connect('mongodb://127.0.0.1:27017/chat_brainspark', function (error) {
         console.log('Listening on port ' + port);
 
         app.use(express.static(__dirname + '/public'));
+        app.use(session({
+            secret: 'ssshhhhh',
+            resave: true,
+            saveUninitialized: true
+        }));
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({extended: true}));
-        app.use(require('./controllers'));
+        require('./controllers')(app);
 
         require('./helpers/chat-sockets')(app, io);
     }));
