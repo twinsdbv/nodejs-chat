@@ -12,14 +12,13 @@ module.exports = function (app, io) {
 
                 // Use the socket object to store data. Each client gets
                 // their own unique socket object
-
-                socket.username = data.user;
+                socket.username = data.email;
                 socket.room = data.id;
-                socket.avatar = gravatar.url(data.avatar, {s: '140', r: 'x', d: 'mm'});
+                socket.avatar = gravatar.url(data.email, {s: '140', r: 'x', d: 'mm'});
 
                 // Tell the person what he should use for an avatar
-                socket.emit('img', socket.avatar);
 
+                socket.emit('img', socket.avatar);
 
                 // Add the client to the room
                 socket.join(data.id);
