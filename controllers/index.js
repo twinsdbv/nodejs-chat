@@ -1,30 +1,48 @@
-var express = require('express')
-    , router = express.Router()
-    , async = require('async')
-    , models = require('../models');
+var models = require('../models');
+var async = require('async');
+var chat = require('./chat');
+var room = require('./room');
+var login = require('./login');
+var user = require('./user');
 
-router.use('/room', require('./room'));
-router.use('/chat', require('./chat'));
-router.use('/users', require('./users'));
+module.exports = function (app, io) {
+    app.get('/', function(req, res) {
+        var sess = req.session;
 
-router.get('/', function(req, res) {
-    var Room = models.Room.model;
+        if(sess.email) {
+            var Room = models.Room.model;
 
-    async.parallel({
-            // 1st parallel function
-            getRooms: function (callback) {
-                Room.find({}).exec(callback);
-            },
+            async.parallel({
+                    // 1st parallel function
+                    getRooms: function (callback) {
+                        Room.find({}).exec(callback);
+                    },
 
-            // 2nd parallel function
-            getOneRoom: function (callback) {
-                Room.findOne({'name': '210708'}).exec(callback);
-            }
+                    // 2nd parallel function
+                    getOneRoom: function (callback) {
+                        Room.findOne({'name': '210708'}).exec(callback);
+                    }
+                }
+                // process results
+                , function (err, result) {
+                    res.render('index', {rooms: result.getRooms, oneRoom: result.getOneRoom});
+                });
+
+            res.cookie('email' , sess.email);
+            require('../helpers/chat-sockets')(app, io);
         }
-        // process results
-    , function (err, result) {
-        res.render('index', {rooms: result.getRooms, oneRoom: result.getOneRoom});
+        else{
+            res.redirect('/login');
+        }
     });
-});
 
-module.exports = router;
+    app.get('/chat/:id', chat.index);
+
+    app.post('/room/create', room.index);
+
+    app.get('/user/:id', user.index);
+
+    app.post('/user/check', user.check);
+
+    app.get('/login', login.index);
+};

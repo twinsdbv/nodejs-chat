@@ -1,17 +1,18 @@
 $(function () {
 
   // getting the id of the room from the url
-  var id = String(window.location.pathname.match(/\/chat\/([A-Za-z0-9]*)$/)[1]);
+  var data = {};
+  data.id = String(window.location.pathname.match(/\/chat\/([A-Za-z0-9]*)$/)[1]);
 
     // connect to the socket
 
     var socket = io(),
         img = '';
 
-    // on connection to server get the iтщвуd of person's room
-    socket.on('connect', function (data) {
-        console.log('connect');
-        socket.emit('load', id);
+    // on connection to server get the id of person's room
+    socket.on('connect', function () {
+        data.email = getCookie('email');
+        socket.emit('load', data);
     });
 
     // save the gravatar url
@@ -53,8 +54,11 @@ $(function () {
         textarea.val("");
     });
 
-    function showMessage(status, data) {
-
+    function getCookie(name) {
+        var matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
     }
 
 });

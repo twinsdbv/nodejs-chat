@@ -1,0 +1,10 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+    <form action="/user/check" method="post">
+        <label>
+            <input type="email" name="email" value="Email">
+        </label>
+        <input type="submit" value="Sign In">
+    </form>
+{% endblock %}
