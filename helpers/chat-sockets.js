@@ -17,11 +17,10 @@ module.exports = function (app, io) {
                 socket.avatar = gravatar.url(data.email, {s: '140', r: 'x', d: 'mm'});
 
                 // Tell the person what he should use for an avatar
-
                 socket.emit('img', socket.avatar);
 
                 // Add the client to the room
-                socket.join(data.id);
+                socket.join(socket.room);
         });
 
         // Somebody left the chat
@@ -44,8 +43,13 @@ module.exports = function (app, io) {
 
         // Handle the sending of messages
         socket.on('msg', function (data) {
+            var timestamp = Math.round(new Date().getTime() / 1000),
+                sendData = {msg: data.msg, user: data.email, img: data.img, timestamp: timestamp};
             // When the server receives a message, it sends it to the other person in the room.
-            socket.broadcast.to(socket.room).emit('receive', {msg: data.msg, user: data.user, img: data.img});
+            socket.broadcast.to(socket.room).emit('receive', sendData);
+
+
+            socket.emit('own-msg', sendData);
         });
     });
 };
