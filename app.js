@@ -15,11 +15,13 @@ app.set("twig options", {
 //app.engine('jade', require('jade').__express)
 
 
-mongoose.connect('mongodb://127.0.0.1:27017/chat_brainspark', function (error) {
+mongoose.connect('mongodb://localhost:27017/chat_brainspark', function (error) {
     if (error) {
         console.log('Mongo connection error!');
         console.log(error);
         return;
+    } else {
+        console.log('Mongo connect!');
     }
 
     // Initialize a new socket.io object. It is bound to
