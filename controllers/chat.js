@@ -1,6 +1,7 @@
 
 module.exports = {
     index: function (req, res) {
-        res.render('chat/index');
+        var sess = req.session;
+        (!sess.email) ? res.redirect('/login') : res.render('chat/index');
     }
 };

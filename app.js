@@ -37,5 +37,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/chat_brainspark', function (error) {
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({extended: true}));
         require('./controllers')(app, io);
+        require('./helpers/chat-sockets')(app, io);
     }));
 });
