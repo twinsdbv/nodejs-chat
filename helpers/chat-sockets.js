@@ -1,4 +1,5 @@
 var gravatar = require('gravatar');
+var models = require('../models');
 
 module.exports = function (app, io) {
     // Initialize a new socket.io application, named 'chat'
@@ -43,13 +44,22 @@ module.exports = function (app, io) {
 
         // Handle the sending of messages
         socket.on('msg', function (data) {
-            var timestamp = Math.round(new Date().getTime() / 1000),
+            var date = new Date(),
+                timestamp = Math.round(date.getTime() / 1000),
                 sendData = {msg: data.msg, user: data.email, img: data.img, timestamp: timestamp};
+
             // When the server receives a message, it sends it to the other person in the room.
             socket.broadcast.to(socket.room).emit('receive', sendData);
 
-
             socket.emit('own-msg', sendData);
+
+            var MessageObj = new models.Message.model({
+                room_id: socket.room,
+                user_email: sendData.user,
+                message_origin: sendData.msg,
+                created: date
+            });
+            MessageObj.save();
         });
     });
 };

@@ -1,5 +1,7 @@
 var Room = require('./room');
+var Message = require('./message');
 
 module.exports = {
-    Room: Room
+    Room: Room,
+    Message: Message
 };

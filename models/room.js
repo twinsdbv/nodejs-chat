@@ -1,4 +1,4 @@
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
 
 //mongoose.connect('mongodb://127.0.0.1:3000/mongoose', function (error) {
 var RoomSchema = new mongoose.Schema({
