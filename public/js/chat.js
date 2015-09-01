@@ -9,7 +9,7 @@ $(function () {
 
     // on connection to server get the id of person's room
     socket.on('connect', function () {
-        data.email = getCookie('email');
+        data.email = Helper.getCookie('email');
         socket.emit('load', data);
     });
 
@@ -17,23 +17,37 @@ $(function () {
     socket.on('img', function (img) {
         data.img = img;
     });
+    //Get recent messages
+    socket.on('recent-messages', function (d) {
+        for(var i=0; i < d.length; i++) {
+            var timestamp = Helper.getTimeStamp( d[i].created );
+            var msg = {
+                user: d[i].user_email,
+                msg: d[i].message_origin,
+                img: d[i].user_avatar,
+                timestamp: timestamp
+            };
+            var receive = (data.email != msg.user);
+            Message.append( Message.create(msg, receive) );
+        }
+    });
+
 
     socket.on('leave', function (data) {
 
         if (data.boolean && id == data.room) {
 
         }
-
     });
 
     //receive message
     socket.on('own-msg', function (data) {
-        appendMessage(data);
+        Message.append( Message.create(data) );
     });
 
     socket.on('receive', function (data) {
         if (data.msg.trim().length) {
-            appendMessage(data, 'receive');
+            Message.append( Message.create(data, true) );
         }
     });
 
@@ -49,17 +63,19 @@ $(function () {
         // Empty the textarea
         textarea.val("");
     });
+});
 
 
+var Helper = {
 
-    function getCookie(name) {
+    getCookie: function (name) {
         var matches = document.cookie.match(new RegExp(
             "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
         ));
         return matches ? decodeURIComponent(matches[1]) : undefined;
-    }
+    },
 
-    function timeConverter(UNIX_timestamp){
+    getTime: function (UNIX_timestamp) {
         var d = new Date(UNIX_timestamp * 1000),	// Convert the passed timestamp to milliseconds
             yyyy = d.getFullYear(),
             mm = ('0' + (d.getMonth() + 1)).slice(-2),	// Months are zero based. Add leading 0.
@@ -84,25 +100,32 @@ $(function () {
         time = yyyy + '-' + mm + '-' + dd + ', ' + h + ':' + min + ' ' + ampm;
 
         return time;
+    },
+    
+    getTimeStamp: function (time) {
+        return new Date( time ).getTime() / 1000;
     }
 
-    function appendMessage (data, receive) {
-        var receiveClass = receive ? receive : '';
+};
 
-        var message = '<div class="message ' + receiveClass + '">'+
+var Message = {
+
+    create: function (data, receive) {
+        var receiveClass = receive ? 'received' : '';
+
+        return '<div class="message ' + receiveClass + '">'+
             '<div class="avatar"><img alt="avatar" src="' + data.img + '"></div>'+
             '<div class="username">' + data.user + '</div>' +
             '<div class="text">' +
-            '<span class="time">' + timeConverter(data.timestamp) + '</span>' +
-            data.msg +
+                '<span class="time">' + Helper.getTime(data.timestamp) + '</span>' +
+                data.msg +
             '</div>' +
             '</div>';
+    },
 
+    append: function (message) {
         var $chatsWindow = $('.chatsWindow');
         $chatsWindow.append( message );
         $chatsWindow[0].scrollTop = $chatsWindow[0].scrollHeight;
     }
-
-
-
-});
+};
