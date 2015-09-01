@@ -9,19 +9,25 @@ module.exports = function (app, io) {
         // number of people in this chat room
         socket.on('load', function (data) {
             var room = findClientsSocket(io, data.id);
-            // Only two people per room are allowed
 
-                // Use the socket object to store data. Each client gets
-                // their own unique socket object
-                socket.username = data.email;
-                socket.room = data.id;
-                socket.avatar = gravatar.url(data.email, {s: '140', r: 'x', d: 'mm'});
+            // Use the socket object to store data. Each client gets
+            // their own unique socket object
+            socket.username = data.email;
+            socket.room = data.id;
+            socket.avatar = gravatar.url(data.email, {s: '140', r: 'x', d: 'mm'});
 
-                // Tell the person what he should use for an avatar
-                socket.emit('img', socket.avatar);
+            // Tell the person what he should use for an avatar
+            socket.emit('img', socket.avatar);
 
-                // Add the client to the room
-                socket.join(socket.room);
+            // Add the client to the room
+            socket.join(socket.room);
+
+            //Get recent messages
+            var Message = models.Message.model;
+
+            Message.find().sort('-date').limit(50).exec(function(err, messages){
+                socket.emit('recent-messages', messages)
+            });
         });
 
         // Somebody left the chat
@@ -56,6 +62,7 @@ module.exports = function (app, io) {
             var MessageObj = new models.Message.model({
                 room_id: socket.room,
                 user_email: sendData.user,
+                user_avatar: sendData.img,
                 message_origin: sendData.msg,
                 created: date
             });
