@@ -1,5 +1,6 @@
 var gravatar = require('gravatar');
 var models = require('../models');
+var modules = require('../modules');
 
 module.exports = function (app, io) {
     // Initialize a new socket.io application, named 'chat'
@@ -50,23 +51,28 @@ module.exports = function (app, io) {
 
         // Handle the sending of messages
         socket.on('msg', function (data) {
-            var date = new Date(),
-                timestamp = Math.round(date.getTime() / 1000),
-                sendData = {msg: data.msg, user: data.email, img: data.img, timestamp: timestamp};
+            modules.mmReceiver.init( data.msg, function (msgHtml) {
 
-            // When the server receives a message, it sends it to the other person in the room.
-            socket.broadcast.to(socket.room).emit('receive', sendData);
+                var date = new Date(),
+                    timestamp = Math.round(date.getTime() / 1000),
+                    sendData = {msgOrigin: data.msg, msgHtml: msgHtml, user: data.email, img: data.img, timestamp: timestamp};
 
-            socket.emit('own-msg', sendData);
+                // When the server receives a message, it sends it to the other person in the room.
+                socket.broadcast.to(socket.room).emit('receive', sendData);
 
-            var MessageObj = new models.Message.model({
-                room_id: socket.room,
-                user_email: sendData.user,
-                user_avatar: sendData.img,
-                message_origin: sendData.msg,
-                created: date
+                socket.emit('own-msg', sendData);
+
+                var MessageObj = new models.Message.model({
+                    room_id: socket.room,
+                    user_email: sendData.user,
+                    user_avatar: sendData.img,
+                    message_origin: sendData.msg,
+                    message_html: sendData.msgHtml,
+                    created: date
+                });
+                MessageObj.save();
+
             });
-            MessageObj.save();
         });
     });
 };
