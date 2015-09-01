@@ -664,12 +664,15 @@ footer {
 .message {
     padding: 5px;
 }
-.message.receive {
+.message.received {
     text-align: right;
 }
 .message .text {
     padding: 10px;
     background: rgba(232, 232, 232, 0.45);
+}
+.message.received .text {
+    text-align: left;
 }
 
 .message .time {
@@ -677,7 +680,9 @@ footer {
     font-size: 10px;
     margin-bottom: 10px;
 }
-
+.message.received .time {
+    text-align: right;
+}
 .avatar {
     display: inline-block;
     width: 50px;
