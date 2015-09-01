@@ -1,27 +1,35 @@
-var SmileyPack = (function () {
+var fs = require('fs');
+var smileyData = require("./data");
+
+module.exports = (function () {
     var settings = {
             path: {
-                toPack: './smiley-pack/skype-smiley-pack/',
-                toData: './smiley-pack/data.json'
+                toPack: '/img/smiley-pack/skype-smiley-pack/',
+                //toData: './data.json'
             },
             imgExtension: '.gif'
         },
-        smileyData = {},
+        //smileyData = {},
         smileyExpand = {},
+        result,
 
 
 
-        init = function (callback) {
-            Get.dataJSON(function () {
-                if(callback && typeof(callback) === "function") {
-                    callback();
-                }
-            });
-        },
+        //init = function (callback) {
+        //    Get.dataJSON(function () {
+        //        if(callback && typeof(callback) === "function") {
+        //            callback();
+        //        }
+        //    });
+        //},
 
         getImage = function (emoticon) {
-            var emoticonName = (smileyExpand[emoticon]) ? (smileyExpand[emoticon]) : emoticon;
-            return (smileyData[emoticonName]) ? Get.image(emoticonName) :  emoticon;
+            Get.dataJSON(function () {
+                var emoticonName = (smileyExpand[emoticon]) ? (smileyExpand[emoticon]) : emoticon;
+                result = (smileyData[emoticonName]) ? Get.image(emoticonName) :  emoticon;
+            });
+
+            return result;
         },
 
         getAllImages = function () {
@@ -31,17 +39,13 @@ var SmileyPack = (function () {
         Get = {
 
             dataJSON: function (callback) {
-                $.get(settings.path.toData, function (data) {
-                    smileyData = data[0];
-                    for (var key in smileyData) {
-                        for(var i=0; i < smileyData[key].length; i++) {
-                            smileyExpand[smileyData[key][i]] = key;
-                        }
+                for (var key in smileyData) {
+                    for(var i=0; i < smileyData[key].length; i++) {
+                        smileyExpand[smileyData[key][i]] = key;
                     }
+                }
 
-                    callback();
-                });
-
+                callback();
             },
 
             image: function (emoticonName) {
@@ -61,7 +65,7 @@ var SmileyPack = (function () {
         };
 
     return {
-        init: init,
+        //init: init,
         getImage: getImage,
         getAllImages: getAllImages
     }

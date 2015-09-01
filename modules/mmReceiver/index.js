@@ -1,6 +1,7 @@
-'use strict';
+var smileyPack = require('./smiley-pack');
 
-var MMreceiver = (function () {
+
+module.exports = (function () {
 
     var Msg = {},
         config = {
@@ -147,7 +148,7 @@ var MMreceiver = (function () {
 
             toHighlights: function (msg, lang, callback) {
                 msg = Prepare.escapeHtml(msg);
-                msg = '<pre><code class="' + lang + '">' + msg + '</code></pre>';
+                msg = '<div class="chat-code"><pre><code class="' + lang + '">' + msg + '</code></pre></div>';
 
                 Message.setForPos(Msg.startPos, Msg.endPos, msg);
 
@@ -200,7 +201,7 @@ var MMreceiver = (function () {
             },
 
             forSmilePack: function (emoticon) {
-                return SmileyPack.getImage(emoticon);
+                return smileyPack.getImage(emoticon);
             },
 
             encodeURI: function (msg) {
@@ -248,14 +249,4 @@ var MMreceiver = (function () {
         init: init
     }
 
-}(SmileyPack));
-
-var Helper = {
-
-    initHighLight: function () {
-        $('pre code').each(function(i, block) {
-            hljs.highlightBlock(block);
-        });
-    }
-
-};
+}(smileyPack));

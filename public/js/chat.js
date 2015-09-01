@@ -23,12 +23,13 @@ $(function () {
             var timestamp = Helper.getTimeStamp( d[i].created );
             var msg = {
                 user: d[i].user_email,
-                msg: d[i].message_origin,
+                msgHtml: d[i].message_html,
                 img: d[i].user_avatar,
                 timestamp: timestamp
             };
             var receive = (data.email != msg.user);
-            Message.append( Message.create(msg, receive) );
+
+            Message.init(msg, receive);
         }
     });
 
@@ -42,12 +43,12 @@ $(function () {
 
     //receive message
     socket.on('own-msg', function (data) {
-        Message.append( Message.create(data) );
+        Message.init(data);
     });
 
     socket.on('receive', function (data) {
         if (data.msg.trim().length) {
-            Message.append( Message.create(data, true) );
+            Message.init(data);
         }
     });
 
@@ -104,11 +105,23 @@ var Helper = {
     
     getTimeStamp: function (time) {
         return new Date( time ).getTime() / 1000;
+    },
+
+    initHighLight: function () {
+        $('pre code').each(function(i, block) {
+            hljs.highlightBlock(block);
+        });
     }
 
 };
 
 var Message = {
+
+    init: function (data, option) {
+        Message.append(Message.create(data, option), function () {
+            Helper.initHighLight();
+        });
+    },
 
     create: function (data, receive) {
         var receiveClass = receive ? 'received' : '';
@@ -118,14 +131,16 @@ var Message = {
             '<div class="username">' + data.user + '</div>' +
             '<div class="text">' +
                 '<span class="time">' + Helper.getTime(data.timestamp) + '</span>' +
-                data.msg +
+                data.msgHtml +
             '</div>' +
             '</div>';
     },
 
-    append: function (message) {
+    append: function (message, callback) {
         var $chatsWindow = $('.chatsWindow');
         $chatsWindow.append( message );
         $chatsWindow[0].scrollTop = $chatsWindow[0].scrollHeight;
+
+        if (callback) callback();
     }
 };

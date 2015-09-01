@@ -655,7 +655,7 @@ footer {
     overflow: hidden;
 }
 .chatsWindow {
-    height: 300px;
+    height: 500px;
     background-color: #FFF;
     overflow-y: scroll;
 }
@@ -683,6 +683,20 @@ footer {
 .message.received .time {
     text-align: right;
 }
+.message .chat-img {
+    max-width: 100%;
+    height: auto;
+}
+.message .chat-video,
+.message .chat-img {
+    text-align: center;
+}
+/*.message .chat-code pre {*/
+    /*white-space: pre-wrap;*/
+    /*white-space: -moz-pre-wrap;*/
+    /*white-space: -o-pre-wrap;*/
+    /*word-wrap: break-word;*/
+/*}*/
 .avatar {
     display: inline-block;
     width: 50px;
