@@ -26,7 +26,7 @@ module.exports = function (app, io) {
             //Get recent messages
             var Message = models.Message.model;
 
-            Message.find().sort('-date').limit(50).exec(function(err, messages){
+            Message.find({}).sort({created: 1}).limit(50).exec(function(err, messages){
                 socket.emit('recent-messages', messages)
             });
         });
@@ -54,22 +54,14 @@ module.exports = function (app, io) {
             modules.mmReceiver.init( data.msg, function (msgHtml) {
 
                 var date = new Date(),
-                    timestamp = Math.round(date.getTime() / 1000),
-                    sendData = {msgOrigin: data.msg, msgHtml: msgHtml, user: data.email, img: data.img, timestamp: timestamp};
+                    sendData = {message_origin: data.msg, message_html: msgHtml, user_email: data.email, user_avatar: data.img, created: date};
 
                 // When the server receives a message, it sends it to the other person in the room.
                 socket.broadcast.to(socket.room).emit('receive', sendData);
 
                 socket.emit('own-msg', sendData);
 
-                var MessageObj = new models.Message.model({
-                    room_id: socket.room,
-                    user_email: sendData.user,
-                    user_avatar: sendData.img,
-                    message_origin: sendData.msg,
-                    message_html: sendData.msgHtml,
-                    created: date
-                });
+                var MessageObj = new models.Message.model( sendData );
                 MessageObj.save();
 
             });

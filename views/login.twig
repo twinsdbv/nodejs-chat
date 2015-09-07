@@ -1,10 +1,36 @@
 {% extends 'base.twig' %}
 
 {% block content %}
-    <form action="/user/check" method="post">
-        <label>
-            <input type="email" name="email" value="Email">
-        </label>
-        <input type="submit" value="Sign In">
-    </form>
+
+
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-sm-12">
+
+                <div class="connected">
+
+                    {#<img src="../img/unnamed.jpg" id="creatorImage" />#}
+
+                    <div class="infoConnected">
+                        <h2>Who are you?</h2>
+                        <br/>
+
+                        <form id="loginForm" action="/user/check" method="post">
+                            {#<input type="text" id="yourName" placeholder="Your nick name" /><br/>#}
+                            <input type="email" name="email"  id="yourEmail" placeholder="Your email address" /><br/>
+                            <input type="submit" id="yourEnter" value="ENTER" />
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 {% endblock %}

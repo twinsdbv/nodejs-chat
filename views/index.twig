@@ -4,11 +4,11 @@
     <section>
         <div class="homesection">
 
-            <h3>One room:</h3>
-            <p>
-                <a href="/chat/{{ oneRoom.id }}"><b>{{ oneRoom.name }}:</b></a> {{ oneRoom.description }}
-            </p>
-            <hr/>
+            <h2>Rooms:</h2>
+            {#<p>#}
+                {#<a href="/chat/{{ oneRoom.id }}"><b>{{ oneRoom.name }}:</b></a> {{ oneRoom.description }}#}
+            {#</p>#}
+            {#<hr/>#}
 
             <ul>
                 {% for room in rooms %}
@@ -20,10 +20,11 @@
                 {% endfor %}
             </ul>
             <hr/>
-
-            <form action="/room/create" method="post">
-                <input type="text" name="name" placeholder="Room name"><br/>
-                <input type="text" name="description" placeholder="Description"><br/>
+            <h2>Create Room</h2>
+            <br/>
+            <form id="roomsForm" action="/room/create" method="post">
+                <input id="roomsName" type="text" name="name" placeholder="Room name"><br/>
+                <input id="roomsDesc" type="text" name="description" placeholder="Description"><br/>
                 <button type="submit">Create</button>
             </form>
 
