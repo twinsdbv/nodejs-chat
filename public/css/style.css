@@ -1,0 +1,319 @@
+/*------------- Reset browser differences ------------- */
+* {
+  padding: 0;
+  margin: 0;
+}
+.h1,
+.h2,
+.h3,
+h1,
+h2,
+h3 {
+  font-weight: bold;
+  margin: 0;
+}
+pre {
+  border: 0;
+  margin: 0;
+}
+/* ------------ default styles ------------ */
+h2 {
+  font-size: 1.5em;
+}
+body {
+  color: #667073;
+  font: 16px/1.3 'Arial', sans-serif;
+  background-color: #f0f1f3;
+}
+.container {
+  min-width: 320px;
+  padding: 0;
+  margin: 0 auto;
+}
+.hidden {
+  display: none;
+}
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+input[type="text"],
+input[type="email"] {
+  color: #383838;
+  width: 200px;
+  height: 30px;
+  font-size: 14px;
+  text-align: center;
+  background-color: #f0f1f3;
+  border: 1px solid #d1d1d1;
+  border-radius: 3px;
+  box-shadow: 0px 3px 3px #e3e4e6;
+  margin-bottom: 20px;
+}
+[type="submit"] {
+  width: 110px;
+  height: 40px;
+  text-align: center;
+  background-color: #73b4d4;
+  border: none;
+  box-shadow: 3px 3px 3px #efedee;
+  border-radius: 2px;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+}
+/* ------ Header ------ */
+header {
+  height: 70px;
+  background-color: #3c4446;
+  margin-bottom: 90px;
+}
+header h1 {
+  color: white;
+  font-family: 'Open Sans Condensed', serif;
+  font-weight: bold;
+  font-size: 25px;
+  text-align: center;
+  padding-top: 15px;
+}
+header h1 span {
+  color: #d6441b;
+}
+#logo {
+  text-decoration: none;
+  color: white;
+}
+#logo:visited {
+  color: white;
+}
+/* ------ rooms page ------ */
+.homesection {
+  text-align: center;
+  margin-top: 140px;
+}
+#roomsForm input[type="text"] {
+  margin-bottom: 8px;
+}
+/* ------ login page ------*/
+.connected {
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+  max-width: 700px;
+  background-color: #ffffff;
+  border-radius: 3px;
+  box-shadow: 0 3px 3px #e3e4e6;
+  color: #637277;
+  padding: 90px 0;
+}
+/* ------ Person Inside ------*/
+/* ------ Invite ------ */
+/* ------ Left ------*/
+/* ------ Too many People ------*/
+/* ------ No Messages ------ */
+/* ------ Chat Screen ------ */
+.chatscreen {
+  width: 700px;
+  margin: 0 auto 200px;
+}
+#messageWindow li {
+  position: relative;
+}
+#messageWindow .info {
+  clear: both;
+  text-align: left;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+#messageWindow .info img {
+  position: absolute;
+  top: -17px;
+  left: -80px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+#messageWindow .info .name {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: bold;
+  clear: both;
+  padding-top: 7px;
+}
+#messageWindow .info .timesent {
+  font-size: 14px;
+  line-height: 1.2;
+  opacity: 0.8;
+  padding-top: 4px;
+}
+#messageWindow .message {
+  text-align: left;
+  float: left;
+  display: inline-block;
+  margin-bottom: 30px;
+  padding: 20px;
+  min-width: 160px;
+  min-height: 10px;
+  background-color: #FFF;
+  border-radius: 3px;
+  box-shadow: 0px 3px 3px #E3E4E6;
+  color: #637277;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+#messageWindow .message a img {
+  width: 100%;
+  height: auto;
+}
+.body {
+  text-align: center;
+  width: 40%;
+  display: block;
+  margin: 0px auto 650px;
+  background-color: #ffffff;
+  color: #637277;
+}
+.chats {
+  list-style-type: none;
+  margin-top: 10px;
+}
+.chats li:first-child {
+  padding: 5px 0;
+}
+.me {
+  clear: both;
+  float: left;
+  margin-bottom: 10px;
+}
+.you {
+  clear: both;
+  float: right;
+  margin-bottom: 10px;
+}
+.you .image {
+  float: right;
+}
+.chats .me p {
+  text-align: left;
+  float: left;
+  display: inline-block;
+  margin-left: 20px;
+  margin-bottom: 30px;
+  padding: 25px 34px;
+  min-width: 160px;
+  min-height: 10px;
+  max-width: 510px;
+  background-color: #FFF;
+  border-radius: 3px;
+  box-shadow: 0px 3px 3px #E3E4E6;
+  color: #637277;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+.chats .you p {
+  text-align: left;
+  float: left;
+  display: inline-block;
+  margin-right: 20px;
+  margin-bottom: 30px;
+  padding: 25px 34px;
+  min-width: 160px;
+  min-height: 10px;
+  max-width: 510px;
+  background-color: #FFF;
+  border-radius: 3px;
+  box-shadow: 0px 3px 3px #E3E4E6;
+  color: #637277;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+.image b {
+  overflow: hidden;
+  display: block;
+  clear: both;
+  padding-top: 7px;
+}
+.image i {
+  font-size: 12px;
+  line-height: 1.2;
+  display: block;
+  opacity: 0.8;
+  padding-top: 4px;
+}
+/* ------------ footer ------------ */
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding-top: 30px;
+  background-color: white;
+  height: 130px;
+}
+#chatform {
+  width: 700px;
+  padding: 5px 0;
+  margin: 0 auto;
+  background-color: white;
+}
+#chatform label {
+  display: block;
+  text-align: center;
+}
+#chatform label textarea {
+  width: 99%;
+  padding: 3px;
+}
+#chatform [type="submit"] {
+  display: block;
+  margin: 0 auto;
+}
+#message {
+  width: 550px;
+  height: 80px;
+  display: block;
+  float: left;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  border: 1px solid #cccccc;
+  border-radius: 2px;
+  padding-left: 20px;
+  padding-top: 20px;
+  resize: none;
+  font: inherit;
+  color: inherit;
+}
+#submit {
+  width: 110px;
+  height: 60px;
+  float: right;
+  text-align: center;
+  background-color: #73b4d4;
+  display: block;
+  margin: 0 auto;
+  border: none;
+  box-shadow: 3px 3px 3px #efedee;
+  border-radius: 2px;
+  color: white;
+  font-weight: bold;
+  font-size: 17px;
+  outline: none;
+  cursor: pointer;
+}
+@media screen and (max-width: 900px) {
+  .container {
+    width: 750px;
+  }
+  .chatscreen {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 900px) {
+  .container {
+    width: 600px;
+  }
+}
