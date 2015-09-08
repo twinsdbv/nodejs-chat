@@ -4,10 +4,11 @@
 
     <title>Brainspark Chat</title>
 
-    <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+    {#<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />#}
     <link type="text/css" rel="stylesheet" href="/css/highlight.pack-default.css" />
     <link href="http://fonts.googleapis.com/css?family=Open+Sans Condensed:300italic,300,700" rel="stylesheet" type="text/css">
     <link type="text/css" rel="stylesheet" href="/css/style.css" />
+    {#<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" />#}
 </head>
 <body>
 
@@ -21,31 +22,29 @@
 
 {% block content %}{% endblock %}
 
+<footer class="hidden">
+    <div class="container">
 
-<div class="container footer hidden">
+        <div class="row">
 
-    <div class="row">
+            <div class="col-sm-12">
 
-        <div class="col-sm-12">
-
-            <footer>
                 <form id="chatform">
 
                     <textarea id="message" placeholder="Write something.."></textarea>
                     <input type="submit" id="submit" value="SEND"/>
 
                 </form>
-            </footer>
+
+            </div>
 
         </div>
 
     </div>
-
-</div>
+</footer>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="/js/moment.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/highlight.pack.js"></script>
 <script src="/js/script.js"></script>
