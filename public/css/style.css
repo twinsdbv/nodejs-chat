@@ -3,6 +3,11 @@
   padding: 0;
   margin: 0;
 }
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
 .h1,
 .h2,
 .h3,
@@ -14,19 +19,17 @@ h3 {
 }
 pre {
   border: 0;
-  margin: 0;
 }
 /* ------------ default styles ------------ */
 h2 {
   font-size: 1.5em;
 }
 body {
+  min-width: 320px;
   color: #667073;
   font: 16px/1.3 'Arial', sans-serif;
-  background-color: #f0f1f3;
 }
 .container {
-  min-width: 320px;
   padding: 0;
   margin: 0 auto;
 }
@@ -50,7 +53,7 @@ input[type="email"] {
   background-color: #f0f1f3;
   border: 1px solid #d1d1d1;
   border-radius: 3px;
-  box-shadow: 0px 3px 3px #e3e4e6;
+  box-shadow: 0 3px 3px #e3e4e6;
   margin-bottom: 20px;
 }
 [type="submit"] {
@@ -117,17 +120,14 @@ header h1 span {
 /* ------ No Messages ------ */
 /* ------ Chat Screen ------ */
 .chatscreen {
-  width: 700px;
-  margin: 0 auto 200px;
-}
-#messageWindow li {
-  position: relative;
+  max-width: 700px;
+  margin: 0 auto 200px auto;
 }
 #messageWindow .info {
+  position: relative;
+  color: #2a2a2a;
   clear: both;
   text-align: left;
-  overflow: hidden;
-  margin-bottom: 10px;
 }
 #messageWindow .info img {
   position: absolute;
@@ -145,35 +145,44 @@ header h1 span {
   padding-top: 7px;
 }
 #messageWindow .info .timesent {
+  display: inline-block;
   font-size: 14px;
   line-height: 1.2;
   opacity: 0.8;
   padding-top: 4px;
 }
 #messageWindow .message {
-  text-align: left;
-  float: left;
+  width: 100%;
   display: inline-block;
   margin-bottom: 30px;
-  padding: 20px;
+  padding: 10px 0 20px 0;
   min-width: 160px;
   min-height: 10px;
   background-color: #FFF;
   border-radius: 3px;
-  box-shadow: 0px 3px 3px #E3E4E6;
   color: #637277;
+  overflow-y: auto;
   line-height: 1.4;
   word-wrap: break-word;
 }
 #messageWindow .message a img {
-  width: 100%;
+  max-width: 100%;
   height: auto;
+  margin: 0 auto;
+}
+#messageWindow .message .chat-code {
+  font-size: 13px;
+}
+#messageWindow .message .chat-code pre {
+  padding: 9.5px;
+  word-wrap: normal;
+  background-color: #F5F5F5;
 }
 .body {
   text-align: center;
   width: 40%;
   display: block;
-  margin: 0px auto 650px;
+  margin: 0 auto 650px;
   background-color: #ffffff;
   color: #637277;
 }
@@ -209,7 +218,7 @@ header h1 span {
   max-width: 510px;
   background-color: #FFF;
   border-radius: 3px;
-  box-shadow: 0px 3px 3px #E3E4E6;
+  box-shadow: 0 3px 3px #E3E4E6;
   color: #637277;
   line-height: 1.4;
   word-wrap: break-word;
@@ -226,7 +235,7 @@ header h1 span {
   max-width: 510px;
   background-color: #FFF;
   border-radius: 3px;
-  box-shadow: 0px 3px 3px #E3E4E6;
+  box-shadow: 0 3px 3px #E3E4E6;
   color: #637277;
   line-height: 1.4;
   word-wrap: break-word;
@@ -255,10 +264,28 @@ footer {
   height: 130px;
 }
 #chatform {
-  width: 700px;
+  width: 100%;
+  text-align: center;
   padding: 5px 0;
   margin: 0 auto;
   background-color: white;
+}
+#chatform textarea {
+  width: 100%;
+  max-width: 700px;
+  height: 80px;
+  background-color: #f9f9f9;
+  border: 1px solid #cccccc;
+  border-radius: 2px;
+  padding-left: 15px;
+  padding-top: 15px;
+  resize: none;
+  font: inherit;
+  color: inherit;
+}
+#chatform [type="submit"] {
+  display: none;
+  margin: 0 auto;
 }
 #chatform label {
   display: block;
@@ -267,25 +294,6 @@ footer {
 #chatform label textarea {
   width: 99%;
   padding: 3px;
-}
-#chatform [type="submit"] {
-  display: block;
-  margin: 0 auto;
-}
-#message {
-  width: 550px;
-  height: 80px;
-  display: block;
-  float: left;
-  margin: 0 auto;
-  background-color: #f9f9f9;
-  border: 1px solid #cccccc;
-  border-radius: 2px;
-  padding-left: 20px;
-  padding-top: 20px;
-  resize: none;
-  font: inherit;
-  color: inherit;
 }
 #submit {
   width: 110px;
@@ -306,14 +314,37 @@ footer {
 }
 @media screen and (max-width: 900px) {
   .container {
-    width: 750px;
+    width: 600px;
   }
   .chatscreen {
     width: 100%;
   }
+  #chatform textarea {
+    width: 96%;
+  }
 }
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 800px) {
   .container {
-    width: 600px;
+    padding-left: 80px;
+  }
+}
+@media screen and (max-width: 720px) {
+  .container {
+    width: 500px;
+  }
+}
+@media screen and (max-width: 600px) {
+  #messageWindow .info .avatar {
+    top: -5px;
+    left: 0;
+    width: 30px;
+    height: 30px;
+  }
+  #messageWindow .info .timesent {
+    margin-left: 40px;
+  }
+  .container {
+    width: 90%;
+    padding-left: 0;
   }
 }
