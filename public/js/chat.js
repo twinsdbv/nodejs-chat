@@ -12,7 +12,8 @@ $(function () {
         data.email = Helper.getCookie('email');
         socket.emit('load', data);
 
-        Helper.showElement('.footer');
+        Helper.showElement('footer');
+        Helper.initEnterKey();
     });
 
     // save the gravatar url

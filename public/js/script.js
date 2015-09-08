@@ -51,6 +51,18 @@ var Helper = {
 
     scrollToBottom: function () {
         $("html, body").animate({ scrollTop: $(document).height()-$(window).height() });
+    },
+
+    initEnterKey: function () {
+        var $chatform = $('#chatform');
+
+        $chatform.find('textarea').keypress( function(e) {
+            var key = e.which;
+            if(key == 13)  {
+                $chatform.find('[type="submit"]').click();
+                return false;
+            }
+        });
     }
 };
 
@@ -73,7 +85,7 @@ var ChatMessage = (function () {
         template: function(data){
             return '<li class= "clearfix" >\
                         <div class="info">\
-                            <img src="' + data.user_avatar + '" />\
+                            <img class="avatar" src="' + data.user_avatar + '" />\
                             <span class="timesent" data-time="' + Helper.getTimestamp( data.created ) + '" >[' + Helper.getTime( Helper.getTimestamp( data.created ) ) + ']</span>\
                             <span class="name">' + data.user_email + '</span>\
                         </div>\
