@@ -12,8 +12,7 @@ $(function () {
         data.email = Helper.getCookie('email');
         socket.emit('load', data);
 
-        Helper.showElement('footer');
-        Helper.initEnterKey();
+        Helper.initChatForm();
     });
 
     // save the gravatar url
@@ -23,9 +22,7 @@ $(function () {
 
     //Get recent messages
     socket.on('recent-messages', function (data) {
-        for(var i=0; i < data.length; i++) {
-            ChatMessage.create(data[i]);
-        }
+        ChatMessage.addHistory(data);
     });
 
 

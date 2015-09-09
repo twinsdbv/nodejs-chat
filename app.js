@@ -26,7 +26,7 @@ mongoose.connect('mongodb://localhost:27017/chat_brainspark', function (error) {
 
     // Initialize a new socket.io object. It is bound to
     // the express app, which allows them to coexist.
-    var io = require('socket.io').listen(app.listen(port, function () {
+    var io = require('socket.io').listen(app.listen (port, function () {
         console.log('Listening on port ' + port);
 
         app.use(express.static(__dirname + '/public'));
