@@ -10,7 +10,7 @@
             {#</p>#}
             {#<hr/>#}
 
-            <ul>
+            <ul class="rooms">
                 {% for room in rooms %}
                     <li>
                         <a href="/chat/{{ room.id }}"><b>{{ room.name }}:</b></a> {{ room.description }}
