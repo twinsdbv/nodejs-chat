@@ -66,7 +66,7 @@ var Helper = {
     },
 
     scrollToBottom: function () {
-        $("html, body").animate({ scrollTop: $(document).height()-$(window).height() });
+        $("html, body").animate({ scrollTop: $(document).height() - $(window).height() }, 300);
     },
 
     initChatForm: function () {
@@ -96,10 +96,29 @@ var ChatMessage = (function () {
             container: '#messageWindow'
     },
 
-    create = function(data) {
-        Set.message( Get.template(data), function () {
+    postProcess = function (time) {
+        var delay = time || 300;
+        setTimeout(function () {
             Helper.initHighLight();
             Helper.scrollToBottom();
+        }, delay);
+    },
+
+    create = function(data) {
+        Set.message( Get.template(data), function () {
+            postProcess();
+        })
+    },
+
+    addHistory = function (dataArray) {
+        var content = '';
+
+        for(var i=0; i < dataArray.length; i++) {
+            content += Get.template( dataArray[i] )
+        }
+
+        Set.history(content, function () {
+            postProcess(700);
         })
     },
 
@@ -120,8 +139,14 @@ var ChatMessage = (function () {
 
     Set = {
 
-        message: function(template, callback){
-            $(settings.container).append( template );
+        message: function(content, callback){
+            $(settings.container).append( content );
+
+            if(callback && typeof (callback) == 'function') callback();
+        },
+
+        history: function(content, callback){
+            $(settings.container).html( content );
 
             if(callback && typeof (callback) == 'function') callback();
         }
@@ -129,6 +154,7 @@ var ChatMessage = (function () {
     };
 
     return {
-        create: create
+        create: create,
+        addHistory: addHistory
     }
 }());
