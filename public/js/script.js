@@ -39,6 +39,22 @@ var Helper = {
         return Math.round(Date.parse(dateString) / 1000);
     },
 
+    getCaret: function (element) {
+        if (element.selectionStart) {
+            return element.selectionStart;
+        } else if (document.selection) {
+            element.focus();
+            var r = document.selection.createRange();
+            if (r == null) return 0;
+
+            var re = element.createTextRange(), rc = re.duplicate();
+            re.moveToBookmark(r.getBookmark());
+            rc.setEndPoint('EndToStart', re);
+            return rc.text.length;
+        }
+        return 0;
+    },
+
     initHighLight: function () {
         $('pre code').each(function(i, block) {
             hljs.highlightBlock(block);
@@ -53,14 +69,21 @@ var Helper = {
         $("html, body").animate({ scrollTop: $(document).height()-$(window).height() });
     },
 
-    initEnterKey: function () {
-        var $chatform = $('#chatform');
+    initChatForm: function () {
+        Helper.showElement('footer');
+        var $chatForm = $('#chatform');
 
-        $chatform.find('textarea').keypress( function(e) {
-            var key = e.which;
-            if(key == 13)  {
-                $chatform.find('[type="submit"]').click();
-                return false;
+        $chatForm.find('textarea').keyup(function (event) {
+            if (event.keyCode == 13) {
+                var content = this.value,
+                    caret = Helper.getCaret(this);
+                if(event.shiftKey){
+                    this.value = content.substring(0, caret - 1) + "\n" + content.substring(caret, content.length);
+                    event.stopPropagation();
+                } else {
+                    this.value = content.substring(0, caret - 1) + content.substring(caret, content.length);
+                    $chatForm.submit();
+                }
             }
         });
     }
