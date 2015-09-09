@@ -20,6 +20,14 @@ h3 {
 pre {
   border: 0;
 }
+input,
+textarea,
+select {
+  outline: none;
+}
+input:-webkit-autofill {
+  color: #fff !important;
+}
 /* ------------ default styles ------------ */
 h2 {
   font-size: 1.5em;
@@ -109,7 +117,6 @@ header h1 span {
   max-width: 700px;
   background-color: #ffffff;
   border-radius: 3px;
-  box-shadow: 0 3px 3px #e3e4e6;
   color: #637277;
   padding: 90px 0;
 }
