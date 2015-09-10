@@ -13,25 +13,27 @@ module.exports = function (app, io) {
             return '';
         }
 
-        var Room = models.Room.model;
+        //var Room = models.Room.model;
 
-        async.parallel({
-                // 1st parallel function
-                getRooms: function (callback) {
-                    Room.find({}).exec(callback);
-                },
+        //async.parallel({
+        //        // 1st parallel function
+        //        getRooms: function (callback) {
+        //            Room.find({}).exec(callback);
+        //        },
+        //
+        //        // 2nd parallel function
+        //        getOneRoom: function (callback) {
+        //            Room.findOne({'name': '210708'}).exec(callback);
+        //        }
+        //    }
+        //    // process results
+        //    , function (err, result) {
+        //        res.render('index', {rooms: result.getRooms, oneRoom: result.getOneRoom});
+        //    });
 
-                // 2nd parallel function
-                getOneRoom: function (callback) {
-                    Room.findOne({'name': '210708'}).exec(callback);
-                }
-            }
-            // process results
-            , function (err, result) {
-                res.render('index', {rooms: result.getRooms, oneRoom: result.getOneRoom});
-            });
 
         res.cookie('email' , sess.email);
+        res.redirect('/chat/55f02aeab4d8f7841b03a856');
     });
 
     app.get('/chat/:id', chat.index);
