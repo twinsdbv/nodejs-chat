@@ -9,7 +9,7 @@ var Helper = {
 
     getTime: function (UNIX_timestamp) {
         var d = new Date(UNIX_timestamp * 1000),	// Convert the passed timestamp to milliseconds
-            yyyy = d.getFullYear(),
+            yy = (d.getFullYear() + '').slice(-2),
             mm = ('0' + (d.getMonth() + 1)).slice(-2),	// Months are zero based. Add leading 0.
             dd = ('0' + d.getDate()).slice(-2),			// Add leading 0.
             hh = d.getHours(),
@@ -30,7 +30,7 @@ var Helper = {
         //}
 
         // ie: 2013-02-18, 8:35 AM
-        time = hh + ':' + min + ':' + sec;
+        time = dd + '-' + mm + '-' + yy + ' ' + hh + ':' + min + ':' + sec;
 
         return time;
     },
@@ -86,7 +86,55 @@ var Helper = {
                 }
             }
         });
+    },
+
+    initSpinner: function (container) {
+        var opts = {
+            lines: 13 // The number of lines to draw
+            , length: 28 // The length of each line
+            , width: 14 // The line thickness
+            , radius: 42 // The radius of the inner circle
+            , scale: 1 // Scales overall size of the spinner
+            , corners: 1 // Corner roundness (0..1)
+            , color: '#000' // #rgb or #rrggbb or array of colors
+            , opacity: 0.25 // Opacity of the lines
+            , rotate: 0 // The rotation offset
+            , direction: 1 // 1: clockwise, -1: counterclockwise
+            , speed: 1 // Rounds per second
+            , trail: 60 // Afterglow percentage
+            , fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+            , zIndex: 2e9 // The z-index (defaults to 2000000000)
+            , className: 'spinner' // The CSS class to assign to the spinner
+            , top: '45%' // Top position relative to parent
+            , left: '50%' // Left position relative to parent
+            , shadow: false // Whether to render a shadow
+            , hwaccel: false // Whether to use hardware acceleration
+            , position: 'absolute' // Element positioning
+        };
+        var target = document.getElementById(container);
+        Helper.spinner = new Spinner(opts).spin(target);
+    },
+
+    initMask: function () {
+        var mask = '<div id="mask"></div>';
+        $('body').append( mask );
+    },
+    
+    waitError: function (status) {
+        if(status == 'on') {
+            var msg = '<span class="wait">Connection <br>error</span>';
+            Helper.initMask();
+
+            $('#mask').append( msg );
+            Helper.initSpinner('mask');
+
+        } else if(status == 'off') {
+            $('#mask').remove();
+            if(Helper.spinner) Helper.spinner.stop();
+        }
     }
+
+
 };
 
 
