@@ -32,7 +32,6 @@ module.exports = function (app, io) {
 
         // Somebody left the chat
         socket.on('disconnect', function () {
-            console.log('disconnect');
             // Notify the other person in the chat room
             // that his partner has left
 
