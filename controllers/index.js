@@ -29,6 +29,7 @@ module.exports = function (app, io) {
             // process results
             , function (err, result) {
                 res.redirect('/chat/' + result.getOneRoom._id);
+                //res.render('index', {rooms: result.getRooms, oneRoom: result.getOneRoom});
             });
 
 
