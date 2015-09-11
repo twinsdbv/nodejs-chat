@@ -25,6 +25,10 @@ input, textarea, select {
   outline: none;
 }
 
+ul li {
+  list-style: none;
+}
+
 input:-webkit-autofill {
   color: #fff !important;
 }
@@ -88,6 +92,25 @@ input[type="email"] {
   font-size: 15px;
   cursor: pointer;
 }
+#mask {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5);
+
+  .wait {
+    position: absolute;
+    top: 44%;
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 10px;
+  }
+}
 
 /* ------ Header ------ */
 
@@ -122,8 +145,16 @@ header {
 /* ------ rooms page ------ */
 
 .homesection {
+  width: 210px;
   text-align: center;
-  margin-top: 140px;
+  margin: 140px auto 0 auto;
+
+  .rooms {
+    text-align: left;
+      li {
+        list-style: none;
+      }
+  }
 }
 
 #roomsForm {
@@ -132,69 +163,6 @@ header {
     margin-bottom: 8px;
   }
 }
-
-//.node {
-//  padding-top: 20px;
-//  text-align: center;
-//  margin-bottom: 120px;
-//}
-//
-//.node #chat {
-//  font-family: 'Open Sans Condensed';
-//  font-weight: normal;
-//  color: #707368;
-//}
-//
-//#nodelogo {
-//  width: 410px;
-//  height: 110px;
-//  margin-bottom: 35px;
-//}
-//
-//#create {
-//  width: 300px;
-//  height: 100px;
-//  background-color: #70b1d1;
-//  text-align: center;
-//  display: block;
-//  margin: 0 auto;
-//  border-radius: 3px;
-//  box-shadow: 0 5px 5px #e4e8e7;
-//  text-decoration: none;
-//  margin-bottom: 70px;
-//  color: #eeffff;
-//}
-//
-//#create:visited {
-//  color: #eeffff;
-//  text-decoration: none;
-//}
-//
-//#createbutton {
-//  padding-top: 28px;
-//}
-//
-//#little {
-//  font-weight: normal;
-//  font-size: 13px;
-//}
-//
-//#big {
-//  font-weight: bold;
-//  font-size: 23px;
-//}
-//
-//.tutorial {
-//  margin-bottom: 90px;
-//}
-//
-//#tutorial {
-//  color: #88bfd4;
-//}
-//
-//#tutorial:visited {
-//  color: #88bfd4;
-//}
 
 /* ------ login page ------*/
 
@@ -210,253 +178,6 @@ header {
   padding: 90px 0;
 }
 
-//.infoConnected {
-//  text-align: center;
-//  margin: 0 auto;
-//}
-
-//#creatorImage {
-//  float: left;
-//  width: 100px;
-//  height: 100px;
-//  border-radius: 50%;
-//}
-/* ------ Person Inside ------*/
-
-//.personinside {
-//  text-align: center;
-//  display: block;
-//  margin: 0 auto;
-//  width: 700px;
-//  height: 400px;
-//  background-color: #ffffff;
-//  border-radius: 3px;
-//  box-shadow: 0 3px 3px #e3e4e6;
-//  color: #637277;
-//}
-//
-//.personinside h2 {
-//  padding-top: 20px;
-//  width: 210px;
-//  overflow: hidden;
-//}
-//
-//.infoInside {
-//  text-align: left;
-//  float: right;
-//  margin: 65px 165px 0 0;
-//}
-//
-//#ownerImage {
-//  float: left;
-//  margin: 90px 0 0 140px;
-//  width: 100px;
-//  height: 100px;
-//  border-radius: 50%;
-//}
-//
-//#hisName {
-//  float: left;
-//  padding-left: 10px;
-//  width: 150px;
-//  height: 30px;
-//  border-radius: 3px;
-//  box-shadow: 0 3px 3px #e3e4e6;
-//  background-color: #f0f1f3;
-//  border: 1px solid #d1d1d1;
-//  border-radius: 3px;
-//  box-shadow: 0 3px 3px #e3e4e6;
-//  margin-bottom: 20px;
-//}
-//
-//#hisEmail {
-//  float: left;
-//  padding-left: 10px;
-//  width: 200px;
-//  height: 30px;
-//  border-radius: 3px;
-//  box-shadow: 0 3px 3px #e3e4e6;
-//  background-color: #f0f1f3;
-//  border: 1px solid #d1d1d1;
-//  border-radius: 3px;
-//  box-shadow: 0 3px 3px #e3e4e6;
-//  margin-bottom: 40px;
-//}
-//
-//#hisEnter {
-//  float: left;
-//  width: 110px;
-//  height: 40px;
-//  text-align: center;
-//  background-color: #73b4d4;
-//  border: none;
-//  box-shadow: 3px 3px 3px #efedee;
-//  border-radius: 2px;
-//  color: white;
-//  font-weight: bold;
-//  font-size: 15px;
-//}
-
-/* ------ Invite ------ */
-
-//.invite-textfield {
-//  text-align: center;
-//  display: block;
-//  margin: 0 auto;
-//  width: 750px;
-//  height: 300px;
-//  background-color: #ffffff;
-//  border-radius: 3px;
-//  box-shadow: 0 3px 3px #e3e4e6;
-//  color: #637277;
-//}
-//
-//.invite-textfield h2 {
-//  padding-top: 80px;
-//}
-//
-//.invite-textfield h5 {
-//  font-weight: normal;
-//  margin: 10px 0 35px;
-//}
-//
-//.invite-textfield .link {
-//  width: 600px;
-//  height: 35px;
-//  text-align: center;
-//  display: block;
-//  margin: 0 auto;
-//  padding-top: 15px;
-//  margin-bottom: 120px;
-//  border-radius: 4px;
-//  background-color: #f0f1f3;
-//}
-//
-//.invite-textfield #link {
-//  text-decoration: none;
-//  color: #637277;
-//}
-
-/* ------ Left ------*/
-
-//.left {
-//  text-align: center;
-//  display: block;
-//  margin: 0 auto;
-//  width: 750px;
-//  height: 300px;
-//  background-color: #ffffff;
-//  border-radius: 3px;
-//  box-shadow: 0 3px 3px #e3e4e6;
-//  color: #637277;
-//  margin-bottom: 400px;
-//}
-//
-//.left h2 {
-//  padding-top: 50px;
-//  padding-bottom: 6px;
-//}
-//
-//.left h5 {
-//  font-weight: normal;
-//  margin-bottom: 100px;
-//}
-//
-//#leftImage {
-//  float: left;
-//  margin: 90px 0 0 140px;
-//  width: 100px;
-//  height: 100px;
-//  border-radius: 50%;
-//}
-//
-//.nickname-left {
-//  width: 40px;
-//  overflow: hidden;
-//}
-
-/* ------ Too many People ------*/
-
-//.toomanypeople {
-//  text-align: center;
-//  display: block;
-//  margin: 0 auto;
-//  width: 750px;
-//  height: 300px;
-//  background-color: #ffffff;
-//  border-radius: 3px;
-//  box-shadow: 0 3px 3px #e3e4e6;
-//  color: #637277;
-//}
-//
-//.toomanypeople h2 {
-//  padding-top: 100px;
-//  padding-bottom: 8px;
-//}
-//
-//.toomanypeople h5 {
-//  font-weight: normal;
-//  margin-bottom: 100px;
-//}
-//
-//#room:visited {
-//  color: #88bfd4;
-//}
-
-/* ------ No Messages ------ */
-
-//.nomessages {
-//  text-align: center;
-//  display: block;
-//  margin: 0 auto;
-//  width: 750px;
-//  height: 300px;
-//  background-color: #ffffff;
-//  border-radius: 3px;
-//  box-shadow: 0 3px 3px #e3e4e6;
-//  color: #637277;
-//  margin-bottom: 400px;
-//}
-//
-//.nomessages h2 {
-//  padding-top: 50px;
-//  overflow: hidden;
-//  padding-bottom: 6px;
-//}
-//
-//.nomessages h5 {
-//  font-weight: normal;
-//  margin-bottom: 100px;
-//}
-//
-//#noMessagesImage {
-//  float: left;
-//  margin: 90px 0 0 140px;
-//  width: 100px;
-//  height: 100px;
-//  border-radius: 50%;
-//}
-//
-//#img {
-//  float: left;
-//  margin: 90px 0 0 140px;
-//  width: 100px;
-//  height: 100px;
-//  border-radius: 50%;
-//}
-//
-//.info {
-//  text-align: left;
-//  float: right;
-//  margin: 65px 60px 0 0;
-//  width: 405px;
-//  overflow: hidden;
-//}
-//
-//.nickname-chat {
-//  overflow: hidden;
-//}
-
 /* ------ Chat Screen ------ */
 .chatscreen {
   max-width: @max-width-default;
@@ -464,10 +185,6 @@ header {
 }
 
 #messageWindow {
-
-  li {
-
-  }
 
   .info {
     position: relative;
@@ -627,9 +344,16 @@ footer {
   bottom: 0;
   left: 0;
   width: 100%;
+  min-width: 320px;
   padding-top: 30px;
   background-color: white;
   height: 130px;
+
+  .col-sm-12 {
+    width: 100%;
+    max-width: @max-width-default;
+    margin: 0 auto;
+  }
 }
 
 #chatform {
@@ -640,8 +364,7 @@ footer {
   background-color: white;
 
   textarea {
-    width: 100%;
-    max-width: @max-width-default;
+    width: 96%;
     height: 80px;
     //display: block;
     //margin: 0 auto;
@@ -689,6 +412,55 @@ footer {
   cursor: pointer;
 }
 
+/* ----------- toolbox ----------- */
+.toolbox {
+  width: 100%;
+  padding: 0 10px;
+
+  li {
+    position: relative;
+    float: left;
+    width: 20px;
+    height: 20px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      display: block;
+      top: 10%;
+      right: -7px;
+      height: 80%;
+      border-left: 1px solid #e1e1e1;
+    }
+
+    &#emoticons {
+      cursor: pointer;
+      background: url("../img/smile.png") no-repeat;
+
+      .emotico-box {
+        position: absolute;
+        bottom: 100%;
+        left: 1px;
+        width: 170px;
+        height: auto;
+        padding: 5px;
+        margin-bottom: -3px;
+        border: 1px solid #ADA9A5;
+        -webkit-box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.27);
+        -moz-box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.27);
+        box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.27);
+        background: #fff;
+
+        & img {
+          cursor: pointer;
+          margin: 2px;
+        }
+      }
+    }
+  }
+}
+
+
 @media screen and (max-width: 900px) {
   .container {
     width: 600px;
@@ -696,9 +468,9 @@ footer {
   .chatscreen {
     width: 100%;
   }
-  #chatform textarea {
-    width: 96%;
-  }
+  //#chatform textarea {
+  //  width: 96%;
+  //}
 }
 @media screen and (max-width: 800px) {
   .container {

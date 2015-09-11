@@ -9,6 +9,8 @@ $(function () {
 
     // on connection to server get the id of person's room
     socket.on('connect', function () {
+        Helper.waitError('off');
+
         data.email = Helper.getCookie('email');
         socket.emit('load', data);
 
@@ -25,12 +27,21 @@ $(function () {
         ChatMessage.addHistory(data);
     });
 
+    //Get all emoticons
+    socket.on('get-emoticons', function (data) {
+        Helper.initEmoticons(data);
+    });
+
 
     socket.on('leave', function (data) {
 
-        if (data.boolean && id == data.room) {
+        //if (data.boolean && id == data.room) {
+        //
+        //}
+    });
 
-        }
+    socket.on('disconnect', function () {
+        Helper.waitError('on');
     });
 
     //receive message
@@ -39,7 +50,7 @@ $(function () {
     });
 
     socket.on('receive', function (data) {
-        if (data.msg.trim().length) {
+        if (data.message_html.trim().length) {
             ChatMessage.create(data);
         }
     });

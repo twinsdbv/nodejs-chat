@@ -23,13 +23,15 @@ module.exports = function (app, io) {
 
                 // 2nd parallel function
                 getOneRoom: function (callback) {
-                    Room.findOne({'name': '210708'}).exec(callback);
+                    Room.findOne({'name': 'main'}).exec(callback);
                 }
             }
             // process results
             , function (err, result) {
-                res.render('index', {rooms: result.getRooms, oneRoom: result.getOneRoom});
+                res.redirect('/chat/' + result.getOneRoom._id);
+                //res.render('index', {rooms: result.getRooms, oneRoom: result.getOneRoom});
             });
+
 
         res.cookie('email' , sess.email);
     });

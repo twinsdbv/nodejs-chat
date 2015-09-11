@@ -25,6 +25,9 @@ textarea,
 select {
   outline: none;
 }
+ul li {
+  list-style: none;
+}
 input:-webkit-autofill {
   color: #fff !important;
 }
@@ -77,6 +80,24 @@ input[type="email"] {
   font-size: 15px;
   cursor: pointer;
 }
+#mask {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5);
+}
+#mask .wait {
+  position: absolute;
+  top: 44%;
+  width: 100%;
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 10px;
+}
 /* ------ Header ------ */
 header {
   height: 70px;
@@ -103,8 +124,15 @@ header h1 span {
 }
 /* ------ rooms page ------ */
 .homesection {
+  width: 210px;
   text-align: center;
-  margin-top: 140px;
+  margin: 140px auto 0 auto;
+}
+.homesection .rooms {
+  text-align: left;
+}
+.homesection .rooms li {
+  list-style: none;
 }
 #roomsForm input[type="text"] {
   margin-bottom: 8px;
@@ -120,11 +148,6 @@ header h1 span {
   color: #637277;
   padding: 90px 0;
 }
-/* ------ Person Inside ------*/
-/* ------ Invite ------ */
-/* ------ Left ------*/
-/* ------ Too many People ------*/
-/* ------ No Messages ------ */
 /* ------ Chat Screen ------ */
 .chatscreen {
   max-width: 700px;
@@ -266,9 +289,15 @@ footer {
   bottom: 0;
   left: 0;
   width: 100%;
+  min-width: 320px;
   padding-top: 30px;
   background-color: white;
   height: 130px;
+}
+footer .col-sm-12 {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
 }
 #chatform {
   width: 100%;
@@ -278,8 +307,7 @@ footer {
   background-color: white;
 }
 #chatform textarea {
-  width: 100%;
-  max-width: 700px;
+  width: 96%;
   height: 80px;
   background-color: #f9f9f9;
   border: 1px solid #cccccc;
@@ -319,15 +347,54 @@ footer {
   outline: none;
   cursor: pointer;
 }
+/* ----------- toolbox ----------- */
+.toolbox {
+  width: 100%;
+  padding: 0 10px;
+}
+.toolbox li {
+  position: relative;
+  float: left;
+  width: 20px;
+  height: 20px;
+}
+.toolbox li::after {
+  content: '';
+  position: absolute;
+  display: block;
+  top: 10%;
+  right: -7px;
+  height: 80%;
+  border-left: 1px solid #e1e1e1;
+}
+.toolbox li#emoticons {
+  cursor: pointer;
+  background: url("../img/smile.png") no-repeat;
+}
+.toolbox li#emoticons .emotico-box {
+  position: absolute;
+  bottom: 100%;
+  left: 1px;
+  width: 170px;
+  height: auto;
+  padding: 5px;
+  margin-bottom: -3px;
+  border: 1px solid #ADA9A5;
+  -webkit-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.27);
+  -moz-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.27);
+  box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.27);
+  background: #fff;
+}
+.toolbox li#emoticons .emotico-box img {
+  cursor: pointer;
+  margin: 2px;
+}
 @media screen and (max-width: 900px) {
   .container {
     width: 600px;
   }
   .chatscreen {
     width: 100%;
-  }
-  #chatform textarea {
-    width: 96%;
   }
 }
 @media screen and (max-width: 800px) {
