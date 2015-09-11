@@ -22,7 +22,9 @@ pre {
 }
 input,
 textarea,
-select {
+select,
+input:focus,
+textarea:focus {
   outline: none;
 }
 ul li {
@@ -350,13 +352,15 @@ footer .col-sm-12 {
 /* ----------- toolbox ----------- */
 .toolbox {
   width: 100%;
-  padding: 0 10px;
+  padding: 0;
 }
 .toolbox li {
   position: relative;
   float: left;
   width: 20px;
   height: 20px;
+  cursor: pointer;
+  margin-left: 13px;
 }
 .toolbox li::after {
   content: '';
@@ -367,11 +371,8 @@ footer .col-sm-12 {
   height: 80%;
   border-left: 1px solid #e1e1e1;
 }
-.toolbox li#emoticons {
-  cursor: pointer;
-  background: url("../img/smile.png") no-repeat;
-}
-.toolbox li#emoticons .emotico-box {
+.toolbox li .emotico-box,
+.toolbox li .code-box {
   position: absolute;
   bottom: 100%;
   left: 1px;
@@ -380,14 +381,57 @@ footer .col-sm-12 {
   padding: 5px;
   margin-bottom: -3px;
   border: 1px solid #ADA9A5;
-  -webkit-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.27);
-  -moz-box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.27);
-  box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.27);
+  -webkit-box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.27);
+  -moz-box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.27);
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.27);
   background: #fff;
 }
-.toolbox li#emoticons .emotico-box img {
+.toolbox li .emotico-box img,
+.toolbox li .code-box img {
   cursor: pointer;
   margin: 2px;
+}
+.toolbox li#emoticons {
+  background: url("../img/smile.png") no-repeat;
+}
+.toolbox li#code {
+  width: 30px;
+  font-size: 9px;
+  line-height: 20px;
+}
+.toolbox li#code .code-box {
+  min-width: 500px;
+  padding: 8px 5px;
+  cursor: default;
+}
+.toolbox li#code .code-box textarea {
+  display: block;
+  width: 100%;
+  min-height: 150px;
+  padding: 5px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.toolbox li#code .code-box label {
+  display: block;
+}
+.toolbox li#code .code-box label.ok {
+  display: inline-block;
+  margin-top: 5px;
+}
+.toolbox li#code .code-box label.lang {
+  margin-bottom: 5px;
+}
+.toolbox li#code .code-box label.lang select {
+  width: 60px;
+}
+.toolbox li#code .code-box button {
+  padding: 0 12px 0 10px;
+  border: 1px solid #C0C0C0;
+  cursor: pointer;
+  margin-left: 1px;
+  background: none;
 }
 @media screen and (max-width: 900px) {
   .container {

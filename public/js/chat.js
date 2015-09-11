@@ -29,7 +29,7 @@ $(function () {
 
     //Get all emoticons
     socket.on('get-emoticons', function (data) {
-        Helper.initEmoticons(data);
+        Helper.initEmoticoTool(data);
     });
 
 
