@@ -39,7 +39,9 @@ var Helper = {
         return Math.round(Date.parse(dateString) / 1000);
     },
 
-    getCaret: function (element) {
+    getTextareaCaret: function () {
+        var element = document.getElementById('message');
+
         if (element.selectionStart) {
             return element.selectionStart;
         } else if (document.selection) {
@@ -65,6 +67,10 @@ var Helper = {
         $(element).removeClass('hidden');
     },
 
+    hideElement: function (element) {
+        $(element).addClass('hidden');
+    },
+
     scrollToBottom: function () {
         $("html, body").animate({ scrollTop: $(document).height() - $(window).height() }, 300);
     },
@@ -73,10 +79,11 @@ var Helper = {
         Helper.showElement('footer');
         var $chatForm = $('#chatform');
 
-        $chatForm.find('textarea').keyup(function (event) {
+        $('body').unbind('keyup').keyup(function (event) {
+            event.stopPropagation();
             if (event.keyCode == 13) {
-                var content = this.value,
-                    caret = Helper.getCaret(this);
+                var content = $('#chatform').find('textarea').val(),
+                    caret = Helper.getTextareaCaret();
                 if(event.shiftKey){
                     this.value = content.substring(0, caret - 1) + "\n" + content.substring(caret, content.length);
                     event.stopPropagation();
@@ -86,6 +93,36 @@ var Helper = {
                 }
             }
         });
+    },
+
+    initEmoticons: function(data) {
+        var $emoticons = $('#emoticons'),
+            $emoticoBox = $emoticons.find('.emotico-box'),
+            $chatTextarea = $('#chatform').find('textarea');
+
+        //add all images of emoticons
+        $emoticoBox.html( data );
+
+        //handlers for emoticoBox
+        $emoticons.off('click').on('click', function (e) {
+            e.stopPropagation();
+            $emoticoBox.toggleClass('hidden');
+        });
+        $('body, .container, footer, .chatscreen').off('click').on('click', function (e) {
+            e.stopPropagation();
+            $emoticoBox.addClass('hidden');
+        });
+
+
+
+        //handlers for emoticons
+        $emoticoBox.find('img').on('click', function () {
+            var iconName = $(this).data('name'),
+                content = $chatTextarea.val(),
+                caret = Helper.getTextareaCaret();
+
+            $chatTextarea.val( content.substring(0, caret - 1) + iconName + content.substring(caret, content.length) );
+        })
     },
 
     initSpinner: function (container) {
@@ -133,7 +170,6 @@ var Helper = {
             if(Helper.spinner) Helper.spinner.stop();
         }
     }
-
 
 };
 

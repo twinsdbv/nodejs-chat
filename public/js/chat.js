@@ -27,6 +27,11 @@ $(function () {
         ChatMessage.addHistory(data);
     });
 
+    //Get all emoticons
+    socket.on('get-emoticons', function (data) {
+        Helper.initEmoticons(data);
+    });
+
 
     socket.on('leave', function (data) {
 

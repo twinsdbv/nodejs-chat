@@ -9,19 +9,8 @@ module.exports = (function () {
             },
             imgExtension: '.gif'
         },
-        //smileyData = {},
         smileyExpand = {},
         result,
-
-
-
-        //init = function (callback) {
-        //    Get.dataJSON(function () {
-        //        if(callback && typeof(callback) === "function") {
-        //            callback();
-        //        }
-        //    });
-        //},
 
         getImage = function (emoticon) {
             Get.dataJSON(function () {
@@ -52,7 +41,7 @@ module.exports = (function () {
                 var mainSmileyInSeries = smileyData[emoticonName][0],
                     fileName = emoticonName.replace(/:/g, '');
 
-                return '<img alt="' + mainSmileyInSeries + '" data-name=" ' + emoticonName + ' " src="' + settings.path.toPack + fileName + settings.imgExtension + '" />'
+                return '<img title="' + fileName + '" alt="' + mainSmileyInSeries + '" data-name=" ' + emoticonName + ' " src="' + settings.path.toPack + fileName + settings.imgExtension + '" />'
             },
 
             allImages: function () {

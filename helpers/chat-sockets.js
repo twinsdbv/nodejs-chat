@@ -28,6 +28,10 @@ module.exports = function (app, io) {
             Message.find({room_id: socket.room}).sort({created: 1}).limit(50).exec(function(err, messages){
                 socket.emit('recent-messages', messages)
             });
+
+            //Get emoticons kit
+            var allEmoticons = modules.smileyPack.getAllImages();
+            socket.emit('get-emoticons', allEmoticons);
         });
 
         // Somebody left the chat
