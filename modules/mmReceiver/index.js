@@ -34,7 +34,7 @@ module.exports = (function () {
 
 
         init = function (message, callback) {
-            Msg.text = Prepare.escapeHtml(message);
+            Msg.text = message;
             marker.currentLang = 0;
 
             for(var key in marker) {
@@ -238,8 +238,8 @@ module.exports = (function () {
             },
 
             setForPos: function (startPos, endPos, data) {
-                var firstSlice = Msg.text.slice(0, startPos),
-                    secondSlice = Msg.text.slice(endPos);
+                var firstSlice = Helper.escapeHtml( Msg.text.slice(0, startPos) ),
+                    secondSlice = Helper.escapeHtml( Msg.text.slice(endPos) );
 
                 Msg.text = firstSlice + data + secondSlice;
             }
