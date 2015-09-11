@@ -197,6 +197,9 @@ header h1 span {
   line-height: 1.4;
   word-wrap: break-word;
 }
+#messageWindow .message a {
+  display: block;
+}
 #messageWindow .message a img {
   max-width: 100%;
   height: auto;
