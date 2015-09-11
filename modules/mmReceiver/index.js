@@ -34,7 +34,7 @@ module.exports = (function () {
 
 
         init = function (message, callback) {
-            Msg.text = message;
+            Msg.text = Prepare.escapeHtml(message);
             marker.currentLang = 0;
 
             for(var key in marker) {
