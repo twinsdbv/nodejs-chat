@@ -21,7 +21,11 @@ pre {
   //margin: 0;
 }
 
-input, textarea, select {
+input,
+textarea,
+select,
+input:focus,
+textarea:focus {
   outline: none;
 }
 
@@ -415,13 +419,15 @@ footer {
 /* ----------- toolbox ----------- */
 .toolbox {
   width: 100%;
-  padding: 0 10px;
+  padding: 0;
 
   li {
     position: relative;
     float: left;
     width: 20px;
     height: 20px;
+    cursor: pointer;
+    margin-left: 13px;
 
     &::after {
       content: '';
@@ -433,27 +439,71 @@ footer {
       border-left: 1px solid #e1e1e1;
     }
 
+    .emotico-box,
+    .code-box {
+      position: absolute;
+      bottom: 100%;
+      left: 1px;
+      width: 170px;
+      height: auto;
+      padding: 5px;
+      margin-bottom: -3px;
+      border: 1px solid #ADA9A5;
+      -webkit-box-shadow: 0 4px 5px 0 rgba(0,0,0,0.27);
+      -moz-box-shadow: 0 4px 5px 0 rgba(0,0,0,0.27);
+      box-shadow: 0 4px 5px 0 rgba(0,0,0,0.27);
+      background: #fff;
+
+      & img {
+        cursor: pointer;
+        margin: 2px;
+      }
+    }
+
     &#emoticons {
-      cursor: pointer;
       background: url("../img/smile.png") no-repeat;
+    }
 
-      .emotico-box {
-        position: absolute;
-        bottom: 100%;
-        left: 1px;
-        width: 170px;
-        height: auto;
-        padding: 5px;
-        margin-bottom: -3px;
-        border: 1px solid #ADA9A5;
-        -webkit-box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.27);
-        -moz-box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.27);
-        box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.27);
-        background: #fff;
+    &#code {
+      width: 30px;
+      font-size: 9px;
+      line-height: 20px;
 
-        & img {
+      & .code-box {
+        min-width: 500px;
+        padding: 8px 5px;
+        cursor: default;
+
+        textarea {
+          display: block;
+          width: 100%;
+          min-height: 150px;
+          padding: 5px;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+        }
+        label {
+          display: block;
+
+          &.ok {
+            display: inline-block;
+            margin-top: 5px;
+          }
+          &.lang {
+            margin-bottom: 5px;
+
+            select {
+              width: 60px;
+            }
+          }
+        }
+        button {
+          padding: 0 12px 0 10px;
+          border: 1px solid #C0C0C0;
           cursor: pointer;
-          margin: 2px;
+          margin-left: 1px;
+          background: none;
         }
       }
     }
@@ -468,9 +518,6 @@ footer {
   .chatscreen {
     width: 100%;
   }
-  //#chatform textarea {
-  //  width: 96%;
-  //}
 }
 @media screen and (max-width: 800px) {
   .container {
@@ -497,9 +544,3 @@ footer {
     padding-left: 0;
   }
 }
-//@media screen and (max-width: 470px) {
-//  .container {
-//    width: 400px;
-//  }
-//}
-

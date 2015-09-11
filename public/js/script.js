@@ -77,12 +77,14 @@ var Helper = {
 
     initChatForm: function () {
         Helper.showElement('footer');
+        Helper.initCodeTool();
+
         var $chatForm = $('#chatform');
 
         $('body').unbind('keyup').keyup(function (event) {
             event.stopPropagation();
             if (event.keyCode == 13) {
-                var content = $('#chatform').find('textarea').val(),
+                var content = $chatForm.find('textarea').val(),
                     caret = Helper.getTextareaCaret();
                 if(event.shiftKey){
                     this.value = content.substring(0, caret - 1) + "\n" + content.substring(caret, content.length);
@@ -93,9 +95,15 @@ var Helper = {
                 }
             }
         });
+
+        $('body, .container, footer, .chatscreen').off('click').on('click', function (e) {
+            e.stopPropagation();
+            $('#emoticons').find('.emotico-box').addClass('hidden');
+            $('#code').find('.code-box').addClass('hidden');
+        });
     },
 
-    initEmoticons: function(data) {
+    initEmoticoTool: function(data) {
         var $emoticons = $('#emoticons'),
             $emoticoBox = $emoticons.find('.emotico-box'),
             $chatTextarea = $('#chatform').find('textarea');
@@ -108,12 +116,6 @@ var Helper = {
             e.stopPropagation();
             $emoticoBox.toggleClass('hidden');
         });
-        $('body, .container, footer, .chatscreen').off('click').on('click', function (e) {
-            e.stopPropagation();
-            $emoticoBox.addClass('hidden');
-        });
-
-
 
         //handlers for emoticons
         $emoticoBox.find('img').on('click', function () {
@@ -122,6 +124,36 @@ var Helper = {
                 caret = Helper.getTextareaCaret();
 
             $chatTextarea.val( content.substring(0, caret - 1) + iconName + content.substring(caret, content.length) );
+        })
+    },
+
+    initCodeTool: function () {
+        var $codeTool = $('#code'),
+            $codeBox = $codeTool.find('.code-box'),
+            $chatTextarea = $('#chatform').find('textarea'),
+            $codeBoxTextarea = $codeBox.find('textarea'),
+            $codeBoxBtn = $codeBox.find('[type="button"]');
+
+        //handlers for codeBox
+        $codeTool.off('click').on('click', function (e) {
+            e.stopPropagation();
+            $codeBox.toggleClass('hidden');
+        });
+        $codeBox.off('click').on('click', function (e) {
+            e.stopPropagation();
+        });
+        $codeBoxBtn.off('click').on('click', function () {
+            var content = $chatTextarea.val(),
+                formArray = $codeBox.serializeArray(),
+                lang = formArray[0].value,
+                code = formArray[1].value,
+                caret = Helper.getTextareaCaret(),
+                lumpOfCode = '['+ lang +']' + code + '[/'+ lang +']';
+
+            $chatTextarea.val( content.substring(0, caret - 1) + lumpOfCode + content.substring(caret, content.length) );
+
+            $codeBoxTextarea.val('');
+            $codeBox.addClass('hidden');
         })
     },
 
