@@ -238,8 +238,8 @@ module.exports = (function () {
             },
 
             setForPos: function (startPos, endPos, data) {
-                var firstSlice = Helper.escapeHtml( Msg.text.slice(0, startPos) ),
-                    secondSlice = Helper.escapeHtml( Msg.text.slice(endPos) );
+                var firstSlice = Prepare.escapeHtml( Msg.text.slice(0, startPos) ),
+                    secondSlice = Prepare.escapeHtml( Msg.text.slice(endPos) );
 
                 Msg.text = firstSlice + data + secondSlice;
             }
