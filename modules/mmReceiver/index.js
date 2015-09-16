@@ -88,6 +88,7 @@ module.exports = (function () {
 
             code: function (lang) {
                 Msg.endPos = Message.get().indexOf(langMarker[lang].end, Msg.startPos) + langMarker[lang].end.length;
+                console.log(Msg.endPos);
 
                 var msgWithMarkers = Message.get().slice(Msg.startPos, Msg.endPos),
                     msgWithoutMarkers = msgWithMarkers.slice(langMarker[lang].start.length, msgWithMarkers.length - langMarker[lang].end.length);
@@ -158,7 +159,17 @@ module.exports = (function () {
             },
 
             url: function (url) {
-                return '<div class="chat-link"><a href="' + url + '" target="_blank">' + url + '</a></div>'
+                return '<div class="chat-link"><a href="' + url + '" target="_blank">' + Prepare.shortText( url ) + '</a></div>'
+            },
+
+            shortText: function (text) {
+                if (text.length > 50) {
+                    var startString = text.substr(0, 30),
+                        finishString = text.substr(-30);
+
+                    text = startString + ' ... ' + finishString;
+                }
+                return text;
             },
 
             getYoutubeId: function (url) {
