@@ -10,17 +10,8 @@ module.exports = (function () {
               height: '280'
           }
         },
-        marker = {
-            php: {
-                start: '[php]',
-                end: '[/php]'
-             },
-            js: {
-                start: '[js]',
-                end: '[/js]'
-            }
-        },
-        langs = [],
+        langs = ['html', 'php', 'js'],
+        langMarker = {},
         regExp = {
           url: /(?:^|[^"'])((ftp|http|https|file):\/\/[\S]+(\b|$))/gim,
           imageLink: /(http:\/\/[\w\-\.]+\.[a-zA-Z]{2,3}(?:\/\S*)?(?:[\w])+\.(?:jpg|png|gif|jpeg|bmp))/gim,
@@ -34,12 +25,10 @@ module.exports = (function () {
 
 
         init = function (message, callback) {
-            Msg.text = message;
-            marker.currentLang = 0;
+            Msg.text = Prepare.escapeHtml( message );
+            langMarker.currentLang = 0;
 
-            for(var key in marker) {
-                langs.push(key);
-            }
+            initLangMarker();
 
             if(callback && typeof(callback) === "function") {
                 InitCallBack = function() {
@@ -47,23 +36,32 @@ module.exports = (function () {
                 }
             }
 
-            Check.forCode(langs);
+            Check.forCode();
+        },
+
+        initLangMarker = function () {
+            for(var i=0; i < langs.length; i++) {
+                langMarker[ langs[i] ] = {
+                    start: '[' + langs[i] + ']',
+                    end: '[/' + langs[i] + ']'
+                };
+            }
         },
 
         Check = {
 
             forCode: function () {
-                if (marker.currentLang >= langs.length) {
+                if (langMarker.currentLang >= langs.length) {
                     Check.forLinks();
                     return;
                 }
 
-                Msg.startPos = Msg.text.indexOf( marker[langs[marker.currentLang]].start );
+                Msg.startPos = Msg.text.indexOf( langMarker[ langs[ langMarker.currentLang ] ].start );
 
                 if ( Msg.startPos != -1) {
-                    Search.code(langs[marker.currentLang]);
+                    Search.code(langs[ langMarker.currentLang ]);
                 } else {
-                    marker.currentLang++;
+                    langMarker.currentLang++;
                     Check.forCode();
                 }
             },
@@ -89,11 +87,12 @@ module.exports = (function () {
         Search = {
 
             code: function (lang) {
-                Msg.endPos = Message.get().indexOf(marker[lang].end, Msg.startPos) + marker[lang].end.length;
-                var msg = Message.get().slice(Msg.startPos, Msg.endPos);
-                Msg.phpMessage = msg.slice(marker[lang].start.length, msg.length - marker[lang].end.length);
+                Msg.endPos = Message.get().indexOf(langMarker[lang].end, Msg.startPos) + langMarker[lang].end.length;
 
-                Prepare.toHighlights(Msg.phpMessage, lang, function() {
+                var msgWithMarkers = Message.get().slice(Msg.startPos, Msg.endPos),
+                    msgWithoutMarkers = msgWithMarkers.slice(langMarker[lang].start.length, msgWithMarkers.length - langMarker[lang].end.length);
+
+                Prepare.toHighlights(msgWithoutMarkers, lang, function() {
                     Check.forCode();
                 });
             },
@@ -147,7 +146,6 @@ module.exports = (function () {
         Prepare = {
 
             toHighlights: function (msg, lang, callback) {
-                msg = Prepare.escapeHtml(msg);
                 msg = '<div class="chat-code"><pre><code class="' + lang + '">' + msg + '</code></pre></div>';
 
                 Message.setForPos(Msg.startPos, Msg.endPos, msg);
@@ -238,8 +236,8 @@ module.exports = (function () {
             },
 
             setForPos: function (startPos, endPos, data) {
-                var firstSlice = Prepare.escapeHtml( Msg.text.slice(0, startPos) ),
-                    secondSlice = Prepare.escapeHtml( Msg.text.slice(endPos) );
+                var firstSlice = Msg.text.slice(0, startPos),
+                    secondSlice = Msg.text.slice(endPos);
 
                 Msg.text = firstSlice + data + secondSlice;
             }
