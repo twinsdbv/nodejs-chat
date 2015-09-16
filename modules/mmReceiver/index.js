@@ -154,11 +154,11 @@ module.exports = (function () {
             },
 
             image: function (link) {
-                return '<a href="' + link + '" target="_blank"> <img class="chat-img" src="' + link + '" alt="" /> </a>'
+                return '<div class="chat-img"><a href="' + link + '" target="_blank"> <img src="' + link + '" alt="" /> </a></div>'
             },
 
             url: function (url) {
-                return '<a href="' + url + '" target="_blank" class="chat-link">' + url + '</a>'
+                return '<div class="chat-link"><a href="' + url + '" target="_blank">' + url + '</a></div>'
             },
 
             getYoutubeId: function (url) {
