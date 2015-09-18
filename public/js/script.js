@@ -150,7 +150,7 @@ var Helper = {
                 caret = Helper.getTextareaCaret(),
                 lumpOfCode = '['+ lang +']' + code + '[/'+ lang +']';
 
-            $chatTextarea.val( content.substring(0, caret - 1) + lumpOfCode + content.substring(caret, content.length) );
+            $chatTextarea.val( content.substring(0, caret) + lumpOfCode + content.substring(caret, content.length) );
 
             $codeBoxTextarea.val('');
             $codeBox.addClass('hidden');
