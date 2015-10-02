@@ -1,5 +1,7 @@
 var Helper = {
 
+    amountMsg: 0,
+
     getCookie: function (name) {
         var matches = document.cookie.match(new RegExp(
             "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
@@ -73,6 +75,12 @@ var Helper = {
 
     scrollToBottom: function () {
         $("html, body").animate({ scrollTop: $(document).height() - $(window).height() }, 300);
+    },
+
+    updateScroll: function () {
+        var scrollBottom = $(document).height() - $(window).scrollTop() - $(window).height();
+
+        (scrollBottom < 400 ) ? Helper.scrollToBottom() : Helper.initMsgUpdates();
     },
 
     initChatForm: function () {
@@ -184,21 +192,31 @@ var Helper = {
         Helper.spinner = new Spinner(opts).spin(target);
     },
 
-    initMask: function () {
-        var mask = '<div id="mask"></div>';
-        $('body').append( mask );
+    initMsgUpdates: function () {
+        var $msgUpdates = $('#msgUpdates'),
+            count = 0,
+            text = 'new message';
+
+        Helper.amountMsg++;
+
+        count = (Helper.amountMsg > 20) ? '20+' : Helper.amountMsg;
+        text = (Helper.amountMsg > 1) ? text + 's' : text;
+
+        $msgUpdates.find('.count').html( count );
+        $msgUpdates.find('.text').html( text );
+        $msgUpdates.addClass('show');
     },
     
     waitError: function (status) {
         if(status == 'on') {
             var msg = '<span class="wait">Connection <br>error</span>';
-            Helper.initMask();
+            Helper.showElement('#mask');
 
             $('#mask').append( msg );
             Helper.initSpinner('mask');
 
         } else if(status == 'off') {
-            $('#mask').remove();
+            Helper.hideElement('#mask');
             if(Helper.spinner) Helper.spinner.stop();
         }
     }
@@ -216,13 +234,13 @@ var ChatMessage = (function () {
         var delay = time || 300;
         setTimeout(function () {
             Helper.initHighLight();
-            Helper.scrollToBottom();
         }, delay);
     },
 
     create = function(data) {
         Set.message( Get.template(data), function () {
             postProcess();
+            Helper.updateScroll();
         })
     },
 
@@ -235,6 +253,7 @@ var ChatMessage = (function () {
 
         Set.history(content, function () {
             postProcess(700);
+            Helper.scrollToBottom();
         })
     },
 

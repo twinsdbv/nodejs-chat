@@ -13,6 +13,7 @@
     {#<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" />#}
 </head>
 <body class="clearfix">
+<button id="msgUpdates"><span class="count">20</span> <span class="text">new message</span></button>
 
 <header>
 
@@ -61,7 +62,6 @@
 
     </div>
 </footer>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/spin.min.js"></script>
@@ -71,6 +71,6 @@
 
 </script>
 {% block javascript %}{% endblock %}
-
+<div id="mask" class="hidden"></div>
 </body>
 </html>
