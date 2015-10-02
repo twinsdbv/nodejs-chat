@@ -25,11 +25,11 @@ module.exports = function (app, io) {
 
             //Get recent messages
             var Message = models.Message.model;
-            Message.find({}).sort({'created': 1}).limit(50).exec(function(err, messages){
+            Message.find({room_id: socket.room}).sort({created: -1}).limit(50).exec(function(err, messages){
                 if(err) {
                     throw new Error('Get recent messages')
                 } else {
-                    socket.emit('recent-messages', messages)
+                    socket.emit('recent-messages', messages.reverse())
                 }
             });
 
