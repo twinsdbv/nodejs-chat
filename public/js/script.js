@@ -197,6 +197,13 @@ var Helper = {
             count = 0,
             text = 'new message';
 
+        $msgUpdates.on('click', function () {
+            Helper.scrollToBottom();
+            $msgUpdates.removeClass('show');
+
+            Helper.amountMsg = 0
+        });
+
         Helper.amountMsg++;
 
         count = (Helper.amountMsg > 20) ? '20+' : Helper.amountMsg;
