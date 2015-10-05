@@ -1,4 +1,4 @@
-var Helper = {
+var App = {
 
     amountMsg: 0,
 
@@ -74,18 +74,19 @@ var Helper = {
     },
 
     scrollToBottom: function () {
-        $("html, body").animate({ scrollTop: $(document).height() - $(window).height() }, 300);
+        $('html, body').scrollTop( $(document).height() );
     },
 
     updateScroll: function () {
         var scrollBottom = $(document).height() - $(window).scrollTop() - $(window).height();
 
-        (scrollBottom < 400 ) ? Helper.scrollToBottom() : Helper.initMsgUpdates();
+        (scrollBottom < 400 ) ? App.scrollToBottom() : App.initMsgUpdates();
     },
 
     initChatForm: function () {
-        Helper.showElement('footer');
-        Helper.initCodeTool();
+        App.showElement('footer');
+        App.initCodeTool();
+        App.initHistoryTool();
 
         var $chatForm = $('#chatform');
 
@@ -93,7 +94,7 @@ var Helper = {
             event.stopPropagation();
             if (event.keyCode == 13) {
                 var content = $chatForm.find('textarea').val(),
-                    caret = Helper.getTextareaCaret();
+                    caret = App.getTextareaCaret();
                 if(event.shiftKey){
                     this.value = content.substring(0, caret - 1) + "\n" + content.substring(caret, content.length);
                     event.stopPropagation();
@@ -129,7 +130,7 @@ var Helper = {
         $emoticoBox.find('img').on('click', function () {
             var iconName = $(this).data('name'),
                 content = $chatTextarea.val(),
-                caret = Helper.getTextareaCaret();
+                caret = App.getTextareaCaret();
 
             $chatTextarea.val( content.substring(0, caret - 1) + iconName + content.substring(caret, content.length) );
         })
@@ -155,7 +156,7 @@ var Helper = {
                 formArray = $codeBox.serializeArray(),
                 lang = formArray[0].value,
                 code = formArray[1].value,
-                caret = Helper.getTextareaCaret(),
+                caret = App.getTextareaCaret(),
                 lumpOfCode = '['+ lang +']' + code + '[/'+ lang +']';
 
             $chatTextarea.val( content.substring(0, caret) + lumpOfCode + content.substring(caret, content.length) );
@@ -206,12 +207,12 @@ var Helper = {
             , position: 'absolute' // Element positioning
         };
         var target = document.getElementById(container);
-        Helper.spinner = new Spinner(opts).spin(target);
+        App.spinner = new Spinner(opts).spin(target);
     },
 
     disableSpinner: function () {
-        Helper.hideElement('#mask');
-        if(Helper.spinner) Helper.spinner.stop();
+        App.hideElement('#mask');
+        if(App.spinner) App.spinner.stop();
     },
 
     initMaskMessage: function (message) {
@@ -224,16 +225,16 @@ var Helper = {
             text = 'new message';
 
         $msgUpdates.on('click', function () {
-            Helper.scrollToBottom();
+            App.scrollToBottom();
             $msgUpdates.removeClass('show');
 
-            Helper.amountMsg = 0
+            App.amountMsg = 0
         });
 
-        Helper.amountMsg++;
+        App.amountMsg++;
 
-        count = (Helper.amountMsg > 20) ? '20+' : Helper.amountMsg;
-        text = (Helper.amountMsg > 1) ? text + 's' : text;
+        count = (App.amountMsg > 20) ? '20+' : App.amountMsg;
+        text = (App.amountMsg > 1) ? text + 's' : text;
 
         $msgUpdates.find('.count').html( count );
         $msgUpdates.find('.text').html( text );
@@ -241,9 +242,9 @@ var Helper = {
     },
     
     connectError: function (status) {
-        Helper.initMaskMessage( 'Connection <br>error' );
-        Helper.showElement('#mask');
-        Helper.initSpinner('mask');
+        App.initMaskMessage( 'Connection <br>error' );
+        App.showElement('#mask');
+        App.initSpinner('mask');
     }
 
 };
@@ -258,27 +259,31 @@ var ChatMessage = (function () {
     postProcess = function (time) {
         var delay = time || 300;
         setTimeout(function () {
-            Helper.initHighLight();
+            App.initHighLight();
         }, delay);
     },
 
     create = function(data) {
         Set.message( Get.template(data), function () {
             postProcess();
-            Helper.updateScroll();
+            App.updateScroll();
         })
     },
 
     addHistory = function (dataArray) {
         var content = '';
+        if (dataArray.length) {
 
-        for(var i=0; i < dataArray.length; i++) {
-            content += Get.template( dataArray[i] )
+            for(var i=0; i < dataArray.length; i++) {
+                content += Get.template( dataArray[i] )
+            }
+        } else {
+            content = '<li>За последний период сообщений не было, воспользуйтесь историей <span class="icon history"></span> или напишите своё</li>';
         }
 
         Set.history(content, function () {
             postProcess(700);
-            Helper.scrollToBottom();
+            App.scrollToBottom();
         })
     },
 
@@ -288,7 +293,7 @@ var ChatMessage = (function () {
             return '<li class= "clearfix" >\
                         <div class="info">\
                             <img class="avatar" src="' + data.user_avatar + '" />\
-                            <span class="timesent" data-time="' + Helper.getTimestamp( data.created ) + '" >[' + Helper.getTime( Helper.getTimestamp( data.created ) ) + ']</span>\
+                            <span class="timesent" data-time="' + App.getTimestamp( data.created ) + '" >[' + App.getTime( App.getTimestamp( data.created ) ) + ']</span>\
                             <span class="name">' + data.user_email + '</span>\
                         </div>\
                         <div class="message">' + data.message_html + '</div>\

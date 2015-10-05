@@ -1,76 +1,91 @@
-$(function () {
+var Chat = {
 
-  // getting the id of the room from the url
-  var data = {};
-  data.id = String(window.location.pathname.match(/\/chat\/([A-Za-z0-9]*)$/)[1]);
+    data: {},
 
-    // connect to the socket
-    var socket = io();
+    load: function() {
+        // getting the id of the room from the url
+        Chat.data.id = String(window.location.pathname.match(/\/chat\/([A-Za-z0-9]*)$/)[1]);
 
-    // on connection to server get the id of person's room
-    socket.on('connect', function () {
-        Helper.disableSpinner();
+        // connect to the socket
+        Chat.socket = io();
 
-        data.email = Helper.getCookie('email');
-        socket.emit('load', data);
+        Chat.connectEvent();
+        Chat.leaveEvent();
+        Chat.disconnectEvent();
+        Chat.gravatarEvent();
+        Chat.messageEvents();
+        Chat.getAllEmoticons();
+    },
 
-        Helper.initChatForm();
-    });
+    connectEvent: function () {
+        // on connection to server get the id of person's room
+        Chat.socket.on('connect', function () {
+            App.disableSpinner();
 
-    // save the gravatar url
-    socket.on('img', function (img) {
-        data.img = img;
-    });
+            Chat.data.email = App.getCookie('email');
+            Chat.socket.emit('load', Chat.data);
 
-    //Get recent messages
-    socket.on('recent-messages', function (data) {
-        ChatMessage.addHistory(data);
-    });
+            App.initChatForm();
+        });
+    },
 
-    //Get all emoticons
-    socket.on('get-emoticons', function (data) {
-        Helper.initEmoticoTool(data);
-    });
+    disconnectEvent: function () {
+        Chat.socket.on('disconnect', function () {
+            App.connectError();
+        });
+    },
 
+    leaveEvent: function () {
+        Chat.socket.on('leave', function (data) {
+            //if (data.boolean && id == data.room) {
+            //
+            //}
+        });
+    },
 
-    socket.on('leave', function (data) {
+    gravatarEvent: function() {
+        Chat.socket.on('img', function (img) {
+            Chat.data.img = img;
+        });
+    },
 
-        //if (data.boolean && id == data.room) {
-        //
-        //}
-    });
+    messageEvents: function(){
 
-    socket.on('disconnect', function () {
-        Helper.connectError();
-    });
-
-    //receive message
-    socket.on('own-msg', function (data) {
-        ChatMessage.create(data);
-    });
-
-    socket.on('receive', function (data) {
-        if (data.message_html.trim().length) {
+        //receive messages
+        Chat.socket.on('own-msg', function (data) {
             ChatMessage.create(data);
-        }
-    });
+        });
 
+        Chat.socket.on('receive', function (data) {
+            if (data.message_html.trim().length) {
+                ChatMessage.create(data);
+            }
+        });
 
-    $('#chatform').on('submit', function (e) {
-        e.preventDefault();
-        var textarea = $('#chatform').find('textarea');
+        //submit messages
+        $('#chatform').on('submit', function (e) {
+            e.preventDefault();
+            var textarea = $('#chatform').find('textarea'),
+                data = Chat.data;
 
-        if (textarea.val().trim().length) {
-            // Send the message to the other person in the chat
-            socket.emit('msg', {msg: textarea.val(), email: data.email, img: data.img});
-        }
-        // Empty the textarea
-        textarea.val("");
-    });
-});
+            if (textarea.val().trim().length) {
+                // Send the message to the other person in the chat
+                Chat.socket.emit('msg', {msg: textarea.val(), email: data.email, img: data.img});
+            }
+            // Empty the textarea
+            textarea.val("");
+        });
+    },
 
+    getAllEmoticons: function() {
+        Chat.socket.on('recent-messages', function (data) {
+            ChatMessage.addHistory(data);
+        });
+    },
     
     getHistory: function (period) {
         Chat.socket.emit('getHistory', period);
     }
+
+};
 
