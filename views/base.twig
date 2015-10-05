@@ -32,7 +32,7 @@
 
             <div class="col-sm-12">
                 <ul class="toolbox clearfix">
-                    <li id="emoticons"><span class="emotico-box hidden"></span></li>
+                    <li id="emoticons" class="icon emoticons"><span class="emotico-box hidden"></span></li>
                     <li id="code">&#60;code&#62;
                         <form class="code-box hidden">
                             <label class="lang">
@@ -47,6 +47,14 @@
                                 <button type="button">OK</button>
                             </label>
                         </form>
+                    </li>
+                    <li id="history" class="icon history">
+                        <ul class="time-box hidden">
+                            <li data-history="7">7 дней</li>
+                            <li data-history="14">14 дней</li>
+                            <li data-history="30">30 дней</li>
+                            <li data-history="all">с самого начала</li>
+                        </ul>
                     </li>
                 </ul>
                 <form id="chatform">
@@ -66,6 +74,7 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/spin.min.js"></script>
 <script src="/js/highlight.pack.js"></script>
+<script src="/js/chat.js"></script>
 <script src="/js/script.js"></script>
 <script>
 

@@ -420,16 +420,21 @@ footer {
 
 /* ----------- toolbox ----------- */
 .toolbox {
-  width: 100%;
-  padding: 0;
+  width: 96%;
+  padding: 0 13px;
+  margin: 0 auto;
 
-  li {
+  & > li {
     position: relative;
     float: left;
     width: 20px;
     height: 20px;
     cursor: pointer;
     margin-left: 13px;
+
+    &:first-child {
+      margin-left: 0;
+    }
 
     &::after {
       content: '';
@@ -441,8 +446,22 @@ footer {
       border-left: 1px solid #e1e1e1;
     }
 
+    &#history {
+      float: right;
+
+      &::after {
+        border: none;
+      }
+
+      .time-box {
+        width: 125px;
+        font-size: 14px;
+      }
+    }
+
     .emotico-box,
-    .code-box {
+    .code-box,
+    .time-box {
       position: absolute;
       bottom: 100%;
       left: 1px;
@@ -460,10 +479,6 @@ footer {
         cursor: pointer;
         margin: 2px;
       }
-    }
-
-    &#emoticons {
-      background: url("../img/smile.png") no-repeat;
     }
 
     &#code {
@@ -541,6 +556,23 @@ footer {
     margin: 0 0 0 -75px;
   }
 }
+
+/* ----------- icons----------- */
+.icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+
+  &.emoticons {
+    background: url("../img/smile.png") no-repeat;
+  }
+  &.history {
+    opacity: .7;
+    background: url("../img/icon-timestamp.png") no-repeat;
+    background-size: cover;
+  }
+}
+
 
 @media screen and (max-width: 900px) {
   .container {

@@ -69,4 +69,8 @@ $(function () {
     });
 });
 
+    
+    getHistory: function (period) {
+        Chat.socket.emit('getHistory', period);
+    }
 

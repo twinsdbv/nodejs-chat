@@ -72,6 +72,11 @@ module.exports = function (app, io) {
 
             });
         });
+
+        // Get message history
+        socket.on('getHistory', function (period) {
+            console.log(period);
+        });
     });
 };
 

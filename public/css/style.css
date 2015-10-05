@@ -354,10 +354,11 @@ footer .col-sm-12 {
 }
 /* ----------- toolbox ----------- */
 .toolbox {
-  width: 100%;
-  padding: 0;
+  width: 96%;
+  padding: 0 13px;
+  margin: 0 auto;
 }
-.toolbox li {
+.toolbox > li {
   position: relative;
   float: left;
   width: 20px;
@@ -365,7 +366,10 @@ footer .col-sm-12 {
   cursor: pointer;
   margin-left: 13px;
 }
-.toolbox li::after {
+.toolbox > li:first-child {
+  margin-left: 0;
+}
+.toolbox > li::after {
   content: '';
   position: absolute;
   display: block;
@@ -374,8 +378,19 @@ footer .col-sm-12 {
   height: 80%;
   border-left: 1px solid #e1e1e1;
 }
-.toolbox li .emotico-box,
-.toolbox li .code-box {
+.toolbox > li#history {
+  float: right;
+}
+.toolbox > li#history::after {
+  border: none;
+}
+.toolbox > li#history .time-box {
+  width: 125px;
+  font-size: 14px;
+}
+.toolbox > li .emotico-box,
+.toolbox > li .code-box,
+.toolbox > li .time-box {
   position: absolute;
   bottom: 100%;
   left: 1px;
@@ -389,25 +404,23 @@ footer .col-sm-12 {
   box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.27);
   background: #fff;
 }
-.toolbox li .emotico-box img,
-.toolbox li .code-box img {
+.toolbox > li .emotico-box img,
+.toolbox > li .code-box img,
+.toolbox > li .time-box img {
   cursor: pointer;
   margin: 2px;
 }
-.toolbox li#emoticons {
-  background: url("../img/smile.png") no-repeat;
-}
-.toolbox li#code {
+.toolbox > li#code {
   width: 30px;
   font-size: 9px;
   line-height: 20px;
 }
-.toolbox li#code .code-box {
+.toolbox > li#code .code-box {
   min-width: 500px;
   padding: 8px 5px;
   cursor: default;
 }
-.toolbox li#code .code-box textarea {
+.toolbox > li#code .code-box textarea {
   display: block;
   width: 100%;
   min-height: 150px;
@@ -416,20 +429,20 @@ footer .col-sm-12 {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-.toolbox li#code .code-box label {
+.toolbox > li#code .code-box label {
   display: block;
 }
-.toolbox li#code .code-box label.ok {
+.toolbox > li#code .code-box label.ok {
   display: inline-block;
   margin-top: 5px;
 }
-.toolbox li#code .code-box label.lang {
+.toolbox > li#code .code-box label.lang {
   margin-bottom: 5px;
 }
-.toolbox li#code .code-box label.lang select {
+.toolbox > li#code .code-box label.lang select {
   width: 60px;
 }
-.toolbox li#code .code-box button {
+.toolbox > li#code .code-box button {
   padding: 0 12px 0 10px;
   border: 1px solid #C0C0C0;
   cursor: pointer;
@@ -463,6 +476,20 @@ footer .col-sm-12 {
 }
 #msgUpdates.show {
   margin: 0 0 0 -75px;
+}
+/* ----------- icons----------- */
+.icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+.icon.emoticons {
+  background: url("../img/smile.png") no-repeat;
+}
+.icon.history {
+  opacity: .7;
+  background: url("../img/icon-timestamp.png") no-repeat;
+  background-size: cover;
 }
 @media screen and (max-width: 900px) {
   .container {

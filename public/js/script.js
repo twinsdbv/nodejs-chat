@@ -165,6 +165,23 @@ var Helper = {
         })
     },
 
+    initHistoryTool: function () {
+        var $historyTool = $('#history'),
+            $historyBox = $historyTool.find('.time-box');
+
+        //handlers for historyBox
+        $historyTool.off('click').on('click', function (e) {
+            e.stopPropagation();
+            $historyBox.toggleClass('hidden');
+        });
+
+        $historyBox.find('li').on('click', function () {
+            var period = $(this).data('history');
+
+            Chat.getHistory( period );
+        })
+    },
+
     initSpinner: function (container) {
         var opts = {
             lines: 13 // The number of lines to draw
