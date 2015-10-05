@@ -9,7 +9,7 @@ $(function () {
 
     // on connection to server get the id of person's room
     socket.on('connect', function () {
-        Helper.waitError('off');
+        Helper.disableSpinner();
 
         data.email = Helper.getCookie('email');
         socket.emit('load', data);
@@ -41,7 +41,7 @@ $(function () {
     });
 
     socket.on('disconnect', function () {
-        Helper.waitError('on');
+        Helper.connectError();
     });
 
     //receive message

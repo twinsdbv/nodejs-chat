@@ -192,6 +192,15 @@ var Helper = {
         Helper.spinner = new Spinner(opts).spin(target);
     },
 
+    disableSpinner: function () {
+        Helper.hideElement('#mask');
+        if(Helper.spinner) Helper.spinner.stop();
+    },
+
+    initMaskMessage: function (message) {
+        $('#mask').find('.message').html( message );
+    },
+
     initMsgUpdates: function () {
         var $msgUpdates = $('#msgUpdates'),
             count = 0,
@@ -214,18 +223,10 @@ var Helper = {
         $msgUpdates.addClass('show');
     },
     
-    waitError: function (status) {
-        if(status == 'on') {
-            var msg = '<span class="wait">Connection <br>error</span>';
-            Helper.showElement('#mask');
-
-            $('#mask').append( msg );
-            Helper.initSpinner('mask');
-
-        } else if(status == 'off') {
-            Helper.hideElement('#mask');
-            if(Helper.spinner) Helper.spinner.stop();
-        }
+    connectError: function (status) {
+        Helper.initMaskMessage( 'Connection <br>error' );
+        Helper.showElement('#mask');
+        Helper.initSpinner('mask');
     }
 
 };
