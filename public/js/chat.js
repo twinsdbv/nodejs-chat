@@ -14,13 +14,14 @@ var Chat = {
         Chat.disconnectEvent();
         Chat.gravatarEvent();
         Chat.messageEvents();
+        Chat.getRecentMessages();
         Chat.getAllEmoticons();
     },
 
     connectEvent: function () {
         // on connection to server get the id of person's room
         Chat.socket.on('connect', function () {
-            App.disableSpinner();
+            //App.disableSpinner();
 
             Chat.data.email = App.getCookie('email');
             Chat.socket.emit('load', Chat.data);
@@ -31,7 +32,10 @@ var Chat = {
 
     disconnectEvent: function () {
         Chat.socket.on('disconnect', function () {
-            App.connectError();
+            App.connectErrorSpinner();
+            setTimeout(function () {
+                location.reload();
+            }, 2000);
         });
     },
 
@@ -77,9 +81,16 @@ var Chat = {
         });
     },
 
-    getAllEmoticons: function() {
+    getRecentMessages: function() {
         Chat.socket.on('recent-messages', function (data) {
+            App.pleaseWaitSpinner();
             ChatMessage.addHistory(data);
+        });
+    },
+
+    getAllEmoticons: function () {
+        Chat.socket.on('get-emoticons', function (data) {
+            App.initEmoticoTool(data);
         });
     },
     

@@ -386,6 +386,7 @@ footer .col-sm-12 {
 }
 .toolbox > li#history .time-box {
   width: 125px;
+  color: #000;
   font-size: 14px;
 }
 .toolbox > li .emotico-box,

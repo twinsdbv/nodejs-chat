@@ -109,6 +109,7 @@ var App = {
             e.stopPropagation();
             $('#emoticons').find('.emotico-box').addClass('hidden');
             $('#code').find('.code-box').addClass('hidden');
+            $('#history').find('.time-box').addClass('hidden');
         });
     },
 
@@ -210,6 +211,13 @@ var App = {
         App.spinner = new Spinner(opts).spin(target);
     },
 
+    enableSpinner: function (message) {
+        message = message || '';
+        App.showElement('#mask');
+        App.initSpinner('mask');
+        App.initMaskMessage(message);
+    },
+
     disableSpinner: function () {
         App.hideElement('#mask');
         if(App.spinner) App.spinner.stop();
@@ -241,10 +249,12 @@ var App = {
         $msgUpdates.addClass('show');
     },
     
-    connectError: function (status) {
-        App.initMaskMessage( 'Connection <br>error' );
-        App.showElement('#mask');
-        App.initSpinner('mask');
+    connectErrorSpinner: function () {
+        App.enableSpinner('Connection <br>error');
+    },
+
+    pleaseWaitSpinner: function() {
+        App.enableSpinner('Please, wait');
     }
 
 };
@@ -282,8 +292,12 @@ var ChatMessage = (function () {
         }
 
         Set.history(content, function () {
+            setTimeout(function () {
+                App.disableSpinner();
+                App.scrollToBottom();
+            }, 500);
+
             postProcess(700);
-            App.scrollToBottom();
         })
     },
 

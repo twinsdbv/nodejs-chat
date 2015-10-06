@@ -2,6 +2,8 @@ var gravatar = require('gravatar');
 var models = require('../models');
 var modules = require('../modules');
 
+var Message = models.Message.model;
+
 module.exports = function (app, io) {
     // Initialize a new socket.io application, named 'chat'
     var chat = io.on('connection', function (socket) {
@@ -24,8 +26,7 @@ module.exports = function (app, io) {
             socket.join(socket.room);
 
             //Get recent messages
-            var Message = models.Message.model;
-            Message.find({room_id: 456}).sort({created: -1}).limit(30).exec(function(err, messages){
+            Message.find({room_id: socket.room}).sort({created: -1}).limit(30).exec(function(err, messages){
                 if(err) {
                     throw new Error('Get recent messages')
                 } else {
@@ -73,9 +74,32 @@ module.exports = function (app, io) {
             });
         });
 
+
+
         // Get message history
         socket.on('getHistory', function (period) {
-            console.log(period);
+            var query = {room_id: socket.room};
+
+            if(period != 'all') {
+                var currentDay = new Date(),
+                    seekingDay = new Date( currentDay.setDate(currentDay.getDate() - period) );
+
+                seekingDay.setHours(0)
+                seekingDay.setMinutes(0);
+                seekingDay.setSeconds(0);
+
+                query = {room_id: socket.room, "created" : { $gte : new Date( seekingDay )}};
+            }
+
+            Message.find( query ).exec( function(err, messages){
+                if(err) {
+                    throw new Error('Get recent messages')
+                } else {
+                    socket.emit('recent-messages', messages)
+                }
+            });
+
+
         });
     });
 };
