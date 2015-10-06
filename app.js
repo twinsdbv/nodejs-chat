@@ -1,21 +1,18 @@
-var Twig = require("twig");
+//var Twig = require("twig");
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var mongoose = require('mongoose');
 var app = express();
 var bodyParser = require('body-parser');
-var port = process.env.PORT || 3000;
+var config = require('./config');
 
 app.set('view engine', 'twig');
 app.set("twig options", {
   strict_variables: false
 });
-//app.set('views', __dirname + '/views')
-//app.engine('jade', require('jade').__express)
 
-
-mongoose.connect('mongodb://localhost:27017/chat_brainspark', function (error) {
+mongoose.connect(config.get('db:connection') + config.get('db:name'), function (error) {
     if (error) {
         console.log('Mongo connection error!');
         console.log(error);
@@ -26,12 +23,13 @@ mongoose.connect('mongodb://localhost:27017/chat_brainspark', function (error) {
 
     // Initialize a new socket.io object. It is bound to
     // the express app, which allows them to coexist.
-    var io = require('socket.io').listen(app.listen (port, function () {
-        console.log('Listening on port ' + port);
+    var io = require('socket.io').listen(app.listen (config.get('port'), function () {
+        console.log('Listening on port ' + config.get('port'));
 
         app.use(express.static(__dirname + '/public'));
         app.use(session({
-            secret: 'ssshhhhh',
+            secret: config.get('session:secret'),
+            cookie: config.get('session:cookie'),
             resave: true,
             saveUninitialized: true
         }));

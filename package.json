@@ -24,6 +24,7 @@
     "express-session": "^1.11.3",
     "gravatar": "*",
     "mongoose": "~4.0.7",
+    "nconf": "^0.8.1",
     "socket.io": "~1.3.6",
     "twig": "~0.8.*"
   },
