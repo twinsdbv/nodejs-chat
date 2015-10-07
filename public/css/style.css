@@ -144,7 +144,7 @@ header h1 span {
   text-align: center;
   display: block;
   margin: 0 auto;
-  max-width: 700px;
+  max-width: 600px;
   background-color: #ffffff;
   border-radius: 3px;
   color: #637277;
@@ -152,7 +152,7 @@ header h1 span {
 }
 /* ------ Chat Screen ------ */
 .chatscreen {
-  max-width: 700px;
+  max-width: 600px;
   margin: 0 auto 200px auto;
 }
 #messageWindow .info {
@@ -199,9 +199,11 @@ header h1 span {
 }
 #messageWindow .message a {
   display: inline-block;
+  width: 100%;
 }
 #messageWindow .message a img {
   max-width: 100%;
+  max-height: 340px;
   height: auto;
   margin: 0 auto;
 }
@@ -301,7 +303,7 @@ footer {
 }
 footer .col-sm-12 {
   width: 100%;
-  max-width: 700px;
+  max-width: 600px;
   margin: 0 auto;
 }
 #chatform {
