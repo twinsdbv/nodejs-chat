@@ -1,6 +1,24 @@
 var App = {
 
-    amountMsg: 0,
+    newMessage: 0,
+    
+    settings: {
+        minScrollBottom: 400
+    },
+
+    init: function () {
+        App.initTinycon();
+        App.initInsetEvents();
+    },
+
+    showElement: function (element) {
+        $(element).removeClass('hidden');
+    },
+
+    hideElement: function (element) {
+        $(element).addClass('hidden');
+    },
+
 
     getCookie: function (name) {
         var matches = document.cookie.match(new RegExp(
@@ -59,28 +77,63 @@ var App = {
         return 0;
     },
 
+    initInsetEvents: function () {
+        $(window).on('blur', function() {
+            App.initInsetEvents.blur = true;
+        });
+        $(window).on('focus', function() {
+            App.initInsetEvents.blur = false;
+            if (App.getScrollPosition() < App.settings.minScrollBottom ) {
+                App.newMessage = 0;
+                Tinycon.setBubble(0);
+            }
+        });
+    },
+
+    initTinycon: function () {
+        Tinycon.setOptions({
+            width: 7,
+            height: 10,
+            font: '10px arial',
+            colour: '#fff',
+            background: '#F00',
+            fallback: true
+        });
+
+        Tinycon.setBubble(0);
+    },
+
     initHighLight: function () {
         $('pre code').each(function(i, block) {
             hljs.highlightBlock(block);
         });
     },
 
-    showElement: function (element) {
-        $(element).removeClass('hidden');
+    enableScrollEvent: function () {
+        $(window).on('scroll', function () {
+            if (App.getScrollPosition() < App.settings.minScrollBottom) App.disableNewMessageButton();
+        })
     },
 
-    hideElement: function (element) {
-        $(element).addClass('hidden');
+    disableScrollEvent: function () {
+        $(window).off('scroll');
     },
 
     scrollToBottom: function () {
         $('html, body').scrollTop( $(document).height() );
     },
 
-    updateScroll: function () {
-        var scrollBottom = $(document).height() - $(window).scrollTop() - $(window).height();
+    getScrollPosition: function () {
+        return $(document).height() - $(window).scrollTop() - $(window).height()
+    },
 
-        (scrollBottom < 400 ) ? App.scrollToBottom() : App.initMsgUpdates();
+    checkScroll: function () {
+        if (App.getScrollPosition() < App.settings.minScrollBottom || ChatMessage.own) {
+            App.scrollToBottom();
+            (App.initInsetEvents.blur) ? Tinycon.setBubble(App.newMessage) : '';
+        } else {
+            App.enableNewMessageButton()
+        }
     },
 
     initChatForm: function () {
@@ -227,26 +280,35 @@ var App = {
         $('#mask').find('.message').html( message );
     },
 
-    initMsgUpdates: function () {
-        var $msgUpdates = $('#msgUpdates'),
+    enableNewMessageButton: function () {
+        var $newMsgButton = $('#msgUpdates'),
             count = 0,
             text = 'new message';
 
-        $msgUpdates.on('click', function () {
-            App.scrollToBottom();
-            $msgUpdates.removeClass('show');
+        if( !$newMsgButton.hasClass('show') ) {
+            $newMsgButton.on('click', function () {
+                App.scrollToBottom();
+                App.disableNewMessageButton();
+                App.disableScrollEvent();
+            });
+            App.enableScrollEvent();
+        }
 
-            App.amountMsg = 0
-        });
+        count = (App.newMessage > 20) ? '20+' : App.newMessage;
+        text = (App.newMessage > 1) ? text + 's' : text;
 
-        App.amountMsg++;
+        $newMsgButton.find('.count').html( count );
+        $newMsgButton.find('.text').html( text );
+        $newMsgButton.addClass('show');
 
-        count = (App.amountMsg > 20) ? '20+' : App.amountMsg;
-        text = (App.amountMsg > 1) ? text + 's' : text;
+        Tinycon.setBubble(App.newMessage);
+    },
 
-        $msgUpdates.find('.count').html( count );
-        $msgUpdates.find('.text').html( text );
-        $msgUpdates.addClass('show');
+    disableNewMessageButton: function () {
+        $('#msgUpdates').removeClass('show');
+
+        Tinycon.setBubble(0);
+        App.newMessage = 0
     },
     
     connectErrorSpinner: function () {
@@ -256,84 +318,4 @@ var App = {
     pleaseWaitSpinner: function() {
         App.enableSpinner('Please, wait');
     }
-
 };
-
-
-var ChatMessage = (function () {
-
-    var settings = {
-            container: '#messageWindow'
-    },
-
-    postProcess = function (time) {
-        var delay = time || 300;
-        setTimeout(function () {
-            App.initHighLight();
-        }, delay);
-    },
-
-    create = function(data) {
-        Set.message( Get.template(data), function () {
-            postProcess();
-            App.updateScroll();
-        })
-    },
-
-    addHistory = function (dataArray) {
-        var content = '';
-        if (dataArray.length) {
-
-            for(var i=0; i < dataArray.length; i++) {
-                content += Get.template( dataArray[i] )
-            }
-        } else {
-            content = '<li>За последний период сообщений не было, воспользуйтесь историей <span class="icon history"></span> или напишите своё</li>';
-        }
-
-        Set.history(content, function () {
-            setTimeout(function () {
-                App.disableSpinner();
-                App.scrollToBottom();
-            }, 500);
-
-            postProcess(700);
-        })
-    },
-
-    Get = {
-
-        template: function(data){
-            return '<li class= "clearfix" >\
-                        <div class="info">\
-                            <img class="avatar" src="' + data.user_avatar + '" />\
-                            <span class="timesent" data-time="' + App.getTimestamp( data.created ) + '" >[' + App.getTime( App.getTimestamp( data.created ) ) + ']</span>\
-                            <span class="name">' + data.user_email + '</span>\
-                        </div>\
-                        <div class="message">' + data.message_html + '</div>\
-                    </li>'
-        }
-
-    },
-
-    Set = {
-
-        message: function(content, callback){
-            $(settings.container).append( content );
-
-            if(callback && typeof (callback) == 'function') callback();
-        },
-
-        history: function(content, callback){
-            $(settings.container).html( content );
-
-            if(callback && typeof (callback) == 'function') callback();
-        }
-
-    };
-
-    return {
-        create: create,
-        addHistory: addHistory
-    }
-}());

@@ -22,5 +22,8 @@
 {% endblock %}
 
 {% block javascript %}
-    <script>Chat.load()</script>
+    <script>
+        App.init();
+        Chat.load()
+    </script>
 {% endblock %}
