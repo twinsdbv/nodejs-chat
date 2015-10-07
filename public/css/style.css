@@ -199,7 +199,6 @@ header h1 span {
 }
 #messageWindow .message a {
   display: inline-block;
-  width: 100%;
 }
 #messageWindow .message a img {
   max-width: 100%;
