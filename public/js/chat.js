@@ -21,8 +21,6 @@ var Chat = {
     connectEvent: function () {
         // on connection to server get the id of person's room
         Chat.socket.on('connect', function () {
-            //App.disableSpinner();
-
             Chat.data.email = App.getCookie('email');
             Chat.socket.emit('load', Chat.data);
 
@@ -69,6 +67,8 @@ var Chat = {
         //submit messages
         $('#chatform').on('submit', function (e) {
             e.preventDefault();
+            ChatMessage.own = true;
+
             var textarea = $('#chatform').find('textarea'),
                 data = Chat.data;
 
@@ -99,4 +99,87 @@ var Chat = {
     }
 
 };
+
+var ChatMessage = (function () {
+
+    var settings = {
+            container: '#messageWindow'
+        },
+
+        postProcess = function (time) {
+            var delay = time || 300;
+
+            setTimeout(function () {
+                App.initHighLight();
+            }, delay);
+        },
+
+        create = function(data) {
+            Insert.message( Get.template(data), function () {
+                if(!ChatMessage.own) App.newMessage++;
+
+                App.checkScroll();
+                postProcess();
+            });
+
+            ChatMessage.own = false;
+        },
+
+        addHistory = function (dataArray) {
+            var content = '';
+            if (dataArray.length) {
+
+                for(var i=0; i < dataArray.length; i++) {
+                    content += Get.template( dataArray[i] )
+                }
+            } else {
+                content = '<li>За последний период сообщений не было, воспользуйтесь историей <span class="icon history"></span> или напишите своё</li>';
+            }
+
+            Insert.history(content, function () {
+                setTimeout(function () {
+                    App.disableSpinner();
+                    App.scrollToBottom();
+                }, 800);
+
+                postProcess(700);
+            })
+        },
+
+        Get = {
+
+            template: function(data){
+                return '<li class= "clearfix" >\
+                        <div class="info">\
+                            <img class="avatar" src="' + data.user_avatar + '" />\
+                            <span class="timesent" data-time="' + App.getTimestamp( data.created ) + '" >[' + App.getTime( App.getTimestamp( data.created ) ) + ']</span>\
+                            <span class="name">' + data.user_email + '</span>\
+                        </div>\
+                        <div class="message">' + data.message_html + '</div>\
+                    </li>'
+            }
+
+        },
+
+        Insert = {
+
+            message: function(content, callback){
+                $(settings.container).append( content );
+
+                if(callback && typeof (callback) == 'function') callback();
+            },
+
+            history: function(content, callback){
+                $(settings.container).html( content );
+
+                if(callback && typeof (callback) == 'function') callback();
+            }
+
+        };
+
+    return {
+        create: create,
+        addHistory: addHistory
+    }
+}());
 
