@@ -4,6 +4,7 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var mongoose = require('mongoose');
 var app = express();
+var favicon = require('serve-favicon');
 var bodyParser = require('body-parser');
 var config = require('./config');
 
@@ -33,6 +34,7 @@ mongoose.connect(config.get('db:connection') + config.get('db:name'), function (
             resave: true,
             saveUninitialized: true
         }));
+        app.use(favicon(__dirname + '/public/favicon.ico'));
         app.use(cookieParser());
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({extended: true}));
