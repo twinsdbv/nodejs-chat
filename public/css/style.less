@@ -232,19 +232,17 @@ header {
   }
   .message {
     width: 100%;
-    //float: left;
     display: inline-block;
-    margin-bottom: 30px;
-    padding: 10px 0 20px 0;
+    color: #4A5559;
     min-width: 160px;
     min-height: 10px;
     background-color: #FFF;
     border-radius: 3px;
-    //box-shadow: 0 3px 3px #E3E4E6;
-    color: #637277;
     overflow-y: auto;
     line-height: 1.4;
     word-wrap: break-word;
+    margin-bottom: 30px;
+    padding: 10px 0 20px 0;
 
     a {
 
@@ -621,9 +619,25 @@ footer {
 @media screen and (max-width: 736px) {
   footer {
     height: 190px;
+
+    &.hide {
+      bottom: -190px;
+    }
   }
   #chatform #submit {
     display: block;
+    width: 99%;
+  }
+  .toolbox > li#history .time-box {
+    width: 145px;
+    font-size: 18px;
+
+    li {
+      margin: 4px 0;
+    }
+  }
+  .toolbox > li#code .code-box button {
+    padding: 5px 26px 5px 24px;
   }
 }
 @media screen and (max-width: 720px) {

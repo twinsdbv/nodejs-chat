@@ -186,16 +186,16 @@ header h1 span {
 #messageWindow .message {
   width: 100%;
   display: inline-block;
-  margin-bottom: 30px;
-  padding: 10px 0 20px 0;
+  color: #4A5559;
   min-width: 160px;
   min-height: 10px;
   background-color: #FFF;
   border-radius: 3px;
-  color: #637277;
   overflow-y: auto;
   line-height: 1.4;
   word-wrap: break-word;
+  margin-bottom: 30px;
+  padding: 10px 0 20px 0;
 }
 #messageWindow .message a img {
   max-width: 100%;
@@ -531,8 +531,22 @@ footer .col-sm-12 {
   footer {
     height: 190px;
   }
+  footer.hide {
+    bottom: -190px;
+  }
   #chatform #submit {
     display: block;
+    width: 99%;
+  }
+  .toolbox > li#history .time-box {
+    width: 145px;
+    font-size: 18px;
+  }
+  .toolbox > li#history .time-box li {
+    margin: 4px 0;
+  }
+  .toolbox > li#code .code-box button {
+    padding: 5px 26px 5px 24px;
   }
 }
 @media screen and (max-width: 720px) {
