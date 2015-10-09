@@ -111,18 +111,20 @@ var App = {
     },
 
     enableScrollEvent: function () {
+        scrollEventCondition();
+
         $(window).on('scroll', function () {
+            scrollEventCondition();
+        });
+
+        function scrollEventCondition () {
             if (App.getScrollPosition() < App.settings.minScrollBottom) {
-                App.disableNewMessageButton()
+                App.disableNewMessageButton();
                 $('footer').removeClass('hide');
             } else {
                 $('footer').addClass('hide');
             }
-        })
-    },
-
-    disableScrollEvent: function () {
-        $(window).off('scroll');
+        }
     },
 
     scrollToBottom: function () {
