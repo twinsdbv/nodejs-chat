@@ -104,7 +104,7 @@ input[type="email"] {
 header {
   height: 70px;
   background-color: #3c4446;
-  margin-bottom: 90px;
+  margin-bottom: 10%;
 }
 header h1 {
   color: white;
@@ -202,7 +202,7 @@ header h1 span {
 }
 #messageWindow .message a img {
   max-width: 100%;
-  max-height: 340px;
+  max-height: 500px;
   height: auto;
   margin: 0 auto;
 }
@@ -213,6 +213,24 @@ header h1 span {
   padding: 9.5px;
   word-wrap: normal;
   background-color: #F5F5F5;
+}
+#messageWindow .message .chat-video {
+  position: relative;
+  padding-bottom: 56.25%;
+  /* 16/9 ratio */
+  padding-top: 30px;
+  /* IE6 workaround*/
+  height: 0;
+  overflow: hidden;
+}
+#messageWindow .message .chat-video iframe,
+#messageWindow .message .chat-video object,
+#messageWindow .message .chat-video embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 .body {
   text-align: center;
@@ -324,8 +342,21 @@ footer .col-sm-12 {
   font: inherit;
   color: inherit;
 }
-#chatform [type="submit"] {
+#chatform #submit {
   display: none;
+  width: 150px;
+  height: 50px;
+  color: white;
+  font-weight: bold;
+  font-size: 17px;
+  text-align: center;
+  line-height: 52px;
+  outline: none;
+  cursor: pointer;
+  border-radius: 2px;
+  box-shadow: 3px 3px 3px #efedee;
+  background-color: #73b4d4;
+  border: none;
   margin: 0 auto;
 }
 #chatform label {
@@ -335,23 +366,6 @@ footer .col-sm-12 {
 #chatform label textarea {
   width: 99%;
   padding: 3px;
-}
-#submit {
-  width: 110px;
-  height: 60px;
-  float: right;
-  text-align: center;
-  background-color: #73b4d4;
-  display: block;
-  margin: 0 auto;
-  border: none;
-  box-shadow: 3px 3px 3px #efedee;
-  border-radius: 2px;
-  color: white;
-  font-weight: bold;
-  font-size: 17px;
-  outline: none;
-  cursor: pointer;
 }
 /* ----------- toolbox ----------- */
 .toolbox {
@@ -386,6 +400,8 @@ footer .col-sm-12 {
   border: none;
 }
 .toolbox > li#history .time-box {
+  right: 1px;
+  left: auto;
   width: 125px;
   color: #000;
   font-size: 14px;
@@ -506,9 +522,20 @@ footer .col-sm-12 {
     padding-left: 80px;
   }
 }
+@media screen and (max-width: 736px) {
+  footer {
+    height: 190px;
+  }
+  #chatform #submit {
+    display: block;
+  }
+}
 @media screen and (max-width: 720px) {
   .container {
     width: 500px;
+  }
+  .toolbox > li#code .code-box {
+    min-width: 370px;
   }
 }
 @media screen and (max-width: 600px) {
@@ -524,5 +551,16 @@ footer .col-sm-12 {
   .container {
     width: 90%;
     padding-left: 0;
+  }
+}
+@media screen and (max-width: 520px) {
+  .toolbox > li#code .code-box {
+    left: -47px;
+    min-width: 300px;
+  }
+}
+@media screen and (max-width: 360px) {
+  .toolbox > li#code .code-box {
+    min-width: 280px;
   }
 }
