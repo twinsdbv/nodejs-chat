@@ -9,6 +9,7 @@ var App = {
     init: function () {
         App.initTinycon();
         App.initInsetEvents();
+        App.enableScrollEvent();
     },
 
     showElement: function (element) {
@@ -111,7 +112,12 @@ var App = {
 
     enableScrollEvent: function () {
         $(window).on('scroll', function () {
-            if (App.getScrollPosition() < App.settings.minScrollBottom) App.disableNewMessageButton();
+            if (App.getScrollPosition() < App.settings.minScrollBottom) {
+                App.disableNewMessageButton()
+                $('footer').removeClass('hide');
+            } else {
+                $('footer').addClass('hide');
+            }
         })
     },
 
@@ -289,9 +295,7 @@ var App = {
             $newMsgButton.on('click', function () {
                 App.scrollToBottom();
                 App.disableNewMessageButton();
-                App.disableScrollEvent();
             });
-            App.enableScrollEvent();
         }
 
         count = (App.newMessage > 20) ? '20+' : App.newMessage;

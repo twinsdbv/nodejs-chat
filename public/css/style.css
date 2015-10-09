@@ -197,9 +197,6 @@ header h1 span {
   line-height: 1.4;
   word-wrap: break-word;
 }
-#messageWindow .message a {
-  display: inline-block;
-}
 #messageWindow .message a img {
   max-width: 100%;
   max-height: 500px;
@@ -317,6 +314,14 @@ footer {
   padding-top: 30px;
   background-color: white;
   height: 130px;
+  -webkit-transition: bottom 0.3s;
+  -moz-transition: bottom 0.3s;
+  -ms-transition: bottom 0.3s;
+  -o-transition: bottom 0.3s;
+  transition: bottom 0.3s;
+}
+footer.hide {
+  bottom: -150px;
 }
 footer .col-sm-12 {
   width: 100%;

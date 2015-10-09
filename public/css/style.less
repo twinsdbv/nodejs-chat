@@ -1,5 +1,6 @@
 @max-width-default: 600px;
 @color-main: #667073;
+
 /*------------- Reset browser differences ------------- */
 
 * {
@@ -115,6 +116,14 @@ input[type="email"] {
     text-align: center;
     font-size: 10px;
   }
+}
+
+.transition(@area: all, @time) {
+  -webkit-transition: @area @time;
+  -moz-transition: @area @time;
+  -ms-transition: @area @time;
+  -o-transition: @area @time;
+  transition: @area @time;
 }
 
 /* ------ Header ------ */
@@ -238,7 +247,6 @@ header {
     word-wrap: break-word;
 
     a {
-      display: inline-block;
 
       img {
         max-width: 100%;
@@ -374,6 +382,11 @@ footer {
   padding-top: 30px;
   background-color: white;
   height: 130px;
+  .transition(bottom, .3s);
+
+  &.hide {
+    bottom: -150px;
+  }
 
   .col-sm-12 {
     width: 100%;

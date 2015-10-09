@@ -139,7 +139,6 @@ var ChatMessage = (function () {
             Insert.history(content, function () {
                 setTimeout(function () {
                     App.disableSpinner();
-                    App.scrollToBottom();
                 }, 800);
 
                 postProcess(700);
