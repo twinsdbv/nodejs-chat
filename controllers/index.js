@@ -4,14 +4,10 @@ var chat = require('./chat');
 var room = require('./room');
 var login = require('./login');
 var user = require('./user');
+var checkAuth = require('../middlewares/checkAuth');
 
 module.exports = function (app, io) {
-    app.get('/', function(req, res) {
-        var sess = req.session;
-        if(!sess.email) {
-            res.redirect('/login');
-            return '';
-        }
+    app.get('/', checkAuth, function(req, res) {
 
         var Room = models.Room.model;
 
@@ -33,14 +29,14 @@ module.exports = function (app, io) {
             });
 
 
-        res.cookie('email' , sess.email);
+        res.cookie('email' , req.session.email);
     });
 
-    app.get('/chat/:id', chat.index);
+    app.get('/chat/:id', checkAuth, chat.index);
 
-    app.post('/room/create', room.index);
+    //app.post('/room/create', room.index);
 
-    app.get('/user/:id', user.index);
+    //app.get('/user/:id', user.index);
 
     app.post('/user/check', user.check);
 
