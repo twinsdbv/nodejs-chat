@@ -84,7 +84,7 @@ module.exports = function (app, io) {
                 var currentDay = new Date(),
                     seekingDay = new Date( currentDay.setDate(currentDay.getDate() - period) );
 
-                seekingDay.setHours(0)
+                seekingDay.setHours(0);
                 seekingDay.setMinutes(0);
                 seekingDay.setSeconds(0);
 
