@@ -1,6 +1,7 @@
 var App = {
 
     newMessage: 0,
+    scrollPosition: 0,
     
     settings: {
         minScrollBottom: 400
@@ -80,13 +81,12 @@ var App = {
 
     initInsetEvents: function () {
         $(window).on('blur', function() {
-            App.initInsetEvents.blur = true;
+            App.initInsetEvents.focus = false;
         });
         $(window).on('focus', function() {
-            App.initInsetEvents.blur = false;
-            if (App.getScrollPosition() < App.settings.minScrollBottom ) {
-                App.newMessage = 0;
-                Tinycon.setBubble(0);
+            App.initInsetEvents.focus = true;
+            if (App.scrollPosition < App.settings.minScrollBottom) {
+                App.resetMessageCounter();
             }
         });
     },
@@ -104,27 +104,28 @@ var App = {
         Tinycon.setBubble(0);
     },
 
-    initHighLight: function () {
-        $('pre code').each(function(i, block) {
-            hljs.highlightBlock(block);
-        });
+    initHighLight: function (time) {
+        time = time || 300;
+
+        setTimeout(function () {
+            $('pre code').each(function(i, block) {
+                hljs.highlightBlock(block);
+            });
+        }, time);
     },
 
     enableScrollEvent: function () {
-        scrollEventCondition();
+        var $footer = $('footer');
 
         $(window).on('scroll', function () {
-            scrollEventCondition();
-        });
+            App.scrollPosition = App.getScrollPosition();
 
-        function scrollEventCondition () {
-            if (App.getScrollPosition() < App.settings.minScrollBottom) {
-                App.disableNewMessageButton();
-                $('footer').removeClass('hide');
+            if (App.scrollPosition < App.settings.minScrollBottom) {
+                $footer.removeClass('hide');
             } else {
-                $('footer').addClass('hide');
+                $footer.addClass('hide');
             }
-        }
+        });
     },
 
     scrollToBottom: function () {
@@ -135,10 +136,9 @@ var App = {
         return $(document).height() - $(window).scrollTop() - $(window).height()
     },
 
-    checkScroll: function () {
-        if (App.getScrollPosition() < App.settings.minScrollBottom || ChatMessage.own) {
-            App.scrollToBottom();
-            (App.initInsetEvents.blur) ? Tinycon.setBubble(App.newMessage) : '';
+    checkScrollPosition: function () {
+        if (App.scrollPosition < App.settings.minScrollBottom || ChatMessage.own) {
+            (!App.initInsetEvents.focus) ? Tinycon.setBubble(App.newMessage) : App.scrollToBottom();;
         } else {
             App.enableNewMessageButton()
         }
@@ -307,12 +307,22 @@ var App = {
         $newMsgButton.find('.text').html( text );
         $newMsgButton.addClass('show');
 
+        $(document).on('scroll', function () {
+            if (App.scrollPosition < App.settings.minScrollBottom) {
+                App.disableNewMessageButton();
+                $(document).off('scroll');
+            }
+        });
+
         Tinycon.setBubble(App.newMessage);
     },
 
     disableNewMessageButton: function () {
         $('#msgUpdates').removeClass('show');
+        App.resetMessageCounter();
+    },
 
+    resetMessageCounter: function () {
         Tinycon.setBubble(0);
         App.newMessage = 0
     },

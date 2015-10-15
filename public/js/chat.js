@@ -106,20 +106,12 @@ var ChatMessage = (function () {
             container: '#messageWindow'
         },
 
-        postProcess = function (time) {
-            var delay = time || 300;
-
-            setTimeout(function () {
-                App.initHighLight();
-            }, delay);
-        },
-
         create = function(data) {
             Insert.message( Get.template(data), function () {
                 if(!ChatMessage.own) App.newMessage++;
 
-                App.checkScroll();
-                postProcess();
+                App.checkScrollPosition();
+                App.initHighLight();
             });
 
             ChatMessage.own = false;
@@ -127,8 +119,8 @@ var ChatMessage = (function () {
 
         addHistory = function (dataArray) {
             var content = '';
-            if (dataArray.length) {
 
+            if (dataArray.length) {
                 for(var i=0; i < dataArray.length; i++) {
                     content += Get.template( dataArray[i] )
                 }
@@ -138,11 +130,10 @@ var ChatMessage = (function () {
 
             Insert.history(content, function () {
                 setTimeout(function () {
+                    App.initHighLight();
                     App.disableSpinner();
                     App.scrollToBottom();
                 }, 800);
-
-                postProcess(700);
             })
         },
 
